@@ -8,8 +8,12 @@ const router = express.Router()
 
 app.use(express.json())
 
-//artempetuh
-//kirillpetuh
+//artempetuh //kirillpetuh
+//vityapetuh
+
+/**
+ * YA SOSU HUI NEGROV
+ */
 
 const booksStorage = [
     { id: 4, name: "PIZDA", author: "Vara" },
