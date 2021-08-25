@@ -10,7 +10,8 @@ app.use(express.json())
 
 const booksStorage = [
     { id: 4, name: "PIZDA", author: "Vara" },
-    { id: 2, name: "MOCHA", author: "Vitya" },
+    { id: 2, name: "MOCHA", author: "Vithhhya" },
+    { id: 2, name: "MOCHA", author: "Vit444ya" },
     { id: 3, name: "SISKI", author: "Kirill" },
     { id: 1, name: "GOVNO", author: "Artem" },
     { id: 5, name: "PIZDA 2", author: "Vara" },
