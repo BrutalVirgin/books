@@ -38,7 +38,7 @@ const users = [
     { id: 3, userId: 3, name: "Kirill" },
 ]
 
-//  верни ридинг лист
+//  Вовращает читательный лист юзера
 router.get("/user/:userId/readinglist", (req, res) => {
     const userBooksStorage = []
     const findUser = ReadingListStorage.find((user) => {
@@ -55,8 +55,8 @@ router.get("/user/:userId/readinglist", (req, res) => {
     res.end(JSON.stringify(userBooksStorage))
 })
 
-///
 
+// Добавляет юзеру книжку
 router.post("/user/:userId/readinglist/:bookId", (req, res) => {
     const bookId = Number(req.params.bookId)
     const userId = Number(req.params.userId)
@@ -122,8 +122,8 @@ router.post("/user/:userId/readinglist/:bookId", (req, res) => {
     res.contentType("json")
     res.end(JSON.stringify(updatedRL))
 })
+
 // Выдает список всех книг в booksStorage
-//достать из массива обьект айди того айдикоторое прилетело
 router.get("/books", (req, res) => {
     console.log("GET")
 
@@ -147,7 +147,7 @@ router.get("/books/:id", (req, res) => {
     res.contentType("json")
     res.end(JSON.stringify(book))
 })
-
+// выдает все книги автора
 router.get("/authors/:id/books", (req, res) => {
     const authorBooks = []
 
@@ -179,7 +179,6 @@ router.get("/authors/:id/books", (req, res) => {
 
 
 // создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage 
-// в валидаторе нуэно провеерять что прилетает только 2 стринговых поля нейм и автор
 router.post("/books/", (req, res) => {
     console.log("POST /books", req.body)
 
@@ -191,6 +190,7 @@ router.post("/books/", (req, res) => {
     res.end(JSON.stringify(booksStorage))
 })
 
+// удаляет книгу по айди
 router.delete("/books/:id", (req, res) => {
 
     const place = booksStorage.find((place) => {
@@ -213,3 +213,16 @@ app.listen(3000, () => {
     console.log("process.pid", process.pid)
     console.log("RUNNIN")
 })
+
+
+// вовращает читательный лист юзера +++
+// добавляет юзеру книжку +++
+// выдает список всех книг в booksStorage +++
+// выдает инфу по книге (весь объект) +++
+// выдает все книги автора +++
+// создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage  +++
+// удаляет книгу по айди +++
+
+// выдает всех авторов
+// удаляет у юзера книгу с читательного листа
+// 
