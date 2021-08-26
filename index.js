@@ -12,8 +12,8 @@ app.use(express.json())
 
 const booksStorage = [
     { id: 4, name: "PIZDA", author: "Vara" },
-    { id: 2, name: "MOCHA", author: "Vithhhya" },
-    { id: 2, name: "MOCHA", author: "Vit444ya" },
+    { id: 2, name: "MOCHA", author: "Vitya" },
+    { id: 2, name: "MOCHA", author: "Vitya" },
     { id: 3, name: "SISKI", author: "Kirill" },
     { id: 1, name: "GOVNO", author: "Artem" },
     { id: 5, name: "PIZDA 2", author: "Vara" },
@@ -37,6 +37,22 @@ const users = [
     { id: 2, userId: 2, name: "Vitya" },
     { id: 3, userId: 3, name: "Kirill" },
 ]
+
+
+router.get("/authors", (req, res) => {
+    const currentAuthors = [booksStorage[0].author]
+    for (a of booksStorage) {
+        for (var i = 0; i <= currentAuthors.length; i++) {
+            if (currentAuthors[i].author !== a.author) {
+                currentAuthors.push(a)
+            }
+        }
+    }
+
+    res.contentType("json")
+    res.end(JSON.stringify(currentAuthors))
+
+})
 
 //  Вовращает читательный лист юзера
 router.get("/user/:userId/readinglist", (req, res) => {
@@ -225,4 +241,6 @@ app.listen(3000, () => {
 
 // выдает всех авторов
 // удаляет у юзера книгу с читательного листа
-// 
+// создать автора
+// удалить автора
+// обновить автора
