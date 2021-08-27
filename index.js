@@ -20,7 +20,7 @@ const booksStorage = [
     { id: 7, name: "MOCHA 2", author: "Vitya" },
     { id: 6, name: "SISKI 2", author: "Kirill" },
 ]
-const authorsBooks = [
+const authors = [
     { id: 1, name: "Vara" },
     { id: 2, name: "Vitya" },
     { id: 3, name: "Kirill" },
@@ -38,23 +38,16 @@ const users = [
     { id: 3, userId: 3, name: "Kirill" },
 ]
 
-
+// выдает всех авторов
 router.get("/authors", (req, res) => {
-    const currentAuthors = [booksStorage[0].author]
-    for (a of booksStorage) {
-        for (var i = 0; i <= currentAuthors.length; i++) {
-            if (currentAuthors[i].author !== a.author) {
-                currentAuthors.push(a)
-            }
-        }
-    }
+
 
     res.contentType("json")
-    res.end(JSON.stringify(currentAuthors))
+    res.end(JSON.stringify(authors))
 
 })
 
-//  Вовращает читательный лист юзера
+//  Возвращает читательный лист юзера
 router.get("/user/:userId/readinglist", (req, res) => {
     const userBooksStorage = []
     const findUser = ReadingListStorage.find((user) => {
@@ -167,7 +160,7 @@ router.get("/books/:id", (req, res) => {
 router.get("/authors/:id/books", (req, res) => {
     const authorBooks = []
 
-    const author = authorsBooks.find((author) => {
+    const author = authors.find((author) => {
         return author.id === Number(req.params.id)
     })
 
@@ -180,6 +173,8 @@ router.get("/authors/:id/books", (req, res) => {
     res.contentType("json")
     res.end(JSON.stringify(authorBooks))
 })
+
+router.get("/")
 
 // CRUD
 // books
@@ -231,16 +226,48 @@ app.listen(3000, () => {
 })
 
 
-// вовращает читательный лист юзера +++
-// добавляет юзеру книжку +++
-// выдает список всех книг в booksStorage +++
-// выдает инфу по книге (весь объект) +++
-// выдает все книги автора +++
-// создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage  +++
-// удаляет книгу по айди +++
 
-// выдает всех авторов
-// удаляет у юзера книгу с читательного листа
+
+
+// выдает все книги автора +++
+
+
+
+// выдает всех авторов +++
 // создать автора
 // удалить автора
 // обновить автора
+
+// Книга
+
+// создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage  +++
+// удаляет книгу по айди +++
+// выдает список всех книг в booksStorage +++
+// обновлять книгу
+// выдает инфу по книге (весь объект) +++
+// удаляет книгу по айди +++
+
+// юзер
+
+// вовращает читательный лист юзера +++
+// добавляет юзеру книжку +++
+// выводит всех юзеров
+// выводит одного юзера
+// обновляет юзера
+// удаляем юзера
+// создаем юзера
+
+// читательный лист
+
+// создавать чительный лист
+// удалять читательный лист
+// обновляем читательный лист
+// получать читательный лист 
+
+//автор
+
+// создать автора
+// удалить автора
+// обновить автора
+// получить автора
+// получить всех авторов
