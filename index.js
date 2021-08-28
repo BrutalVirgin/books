@@ -38,6 +38,16 @@ const users = [
     { id: 3, userId: 3, name: "Kirill" },
 ]
 
+// обновлять книгу
+router.put("/books/id/:name/:author", (req, res) => {
+    const findBook = booksStorage.find((book) => {
+        return book.id === Number(req.params.id)
+    })
+
+    res.contentType("json")
+    res.end(JSON.stringify(findBook))
+})
+
 // выдает всех авторов
 router.get("/authors", (req, res) => {
 
@@ -174,7 +184,6 @@ router.get("/authors/:id/books", (req, res) => {
     res.end(JSON.stringify(authorBooks))
 })
 
-router.get("/")
 
 // CRUD
 // books
@@ -225,19 +234,6 @@ app.listen(3000, () => {
     console.log("RUNNIN")
 })
 
-
-
-
-
-// выдает все книги автора +++
-
-
-
-// выдает всех авторов +++
-// создать автора
-// удалить автора
-// обновить автора
-
 // Книга
 
 // создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage  +++
@@ -270,4 +266,5 @@ app.listen(3000, () => {
 // удалить автора
 // обновить автора
 // получить автора
-// получить всех авторов
+// получить всех авторов +++
+// выдает все книги автора +++
