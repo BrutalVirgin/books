@@ -39,7 +39,7 @@ const users = [
 ]
 
 // обновлять книгу
-router.put("/books/id/:name/:author", (req, res) => {
+router.put("/books/:id/:name/:author", (req, res) => {
     const findBook = booksStorage.find((book) => {
         return book.id === Number(req.params.id)
     })
