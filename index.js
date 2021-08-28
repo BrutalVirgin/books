@@ -38,23 +38,121 @@ const users = [
     { id: 3, userId: 3, name: "Kirill" },
 ]
 
+// создавать чительный лист
+router.post("/readinglist/:userId/:booksIds", (req, res) => {
+    const userId = Number(req.params.userId)
+    const findUser = users.find((user) => {
+        return user.userId === userId
+    })
+    if (!findUser) {
+        return res.end(`user ${userId} not found`)
+    }
+    for (user of ReadingListStorage) {
+        if (user.userId === userId) {
+            return res.end(`user ${userId} already have a reading list`)
+        }
+        else if (user.userId !== userId) {
+            const newList = { id: ReadingListStorage.length + 1, userId: req.params.userId, booksIds: [req.params.booksIds] }
+            ReadingListStorage.push(newList)
+        }
+    }
+
+    res.contentType("json")
+    res.end(JSON.stringify(ReadingListStorage))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// создаем юзера 
+router.post("/users/user/:userId/:name", (req, res) => {
+    const userId = Number(req.params.userId)
+    for (user of users) {
+        if (user.userId === userId)
+            return res.end(`user id ${userId} is already taken`)
+    }
+    const newUser = { id: users.length + 1, userId: req.params.userId, name: req.params.name }
+    users.push(newUser)
+
+    res.contentType("json")
+    res.end(JSON.stringify(users))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// удаляем юзера
+router.delete("/users/user/:id", (req, res) => {
+    const getUser = users.find((user) => {
+        return user.id === Number(req.params.id)
+    })
+    if (!getUser) {
+        return res.end(`user ${req.params.id} not found`)
+    }
+    const position = users.indexOf(getUser)
+    users.splice(position, 1)
+
+    res.contentType("json")
+    res.end(JSON.stringify(users))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// обновляет юзера
+router.put("/users/user/:id/:userId/:name", (req, res) => {
+    const getUser = users.find((user) => {
+        return user.id === Number(req.params.id)
+    })
+    if (!getUser) {
+        return res.end(`user ${req.params.id} not found`)
+    }
+
+    const position = users.indexOf(getUser)
+    users[position] = { id: getUser.id, userId: req.params.userId, name: req.params.name }
+
+    res.contentType("json")
+    res.end(JSON.stringify(users[position]))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// выводит одного юзера
+router.get("/users/user/:userId", (req, res) => {
+    const getUser = users.find((user) => {
+        return user.id === Number(req.params.userId)
+    })
+    if (!getUser) {
+        return res.end(`user ${req.params.userId} not found`)
+    }
+    res.contentType("json")
+    res.end(JSON.stringify(getUser))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
 // обновлять книгу
 router.put("/books/:id/:name/:author", (req, res) => {
     const findBook = booksStorage.find((book) => {
         return book.id === Number(req.params.id)
     })
+    if (!findBook) {
+        res.end("Книга не найдена")
+        return
+    }
+    const place = booksStorage.indexOf(findBook)
+    booksStorage[place] = { id: findBook.id, name: req.params.name, author: req.params.author }
 
     res.contentType("json")
-    res.end(JSON.stringify(findBook))
+    res.end(JSON.stringify(booksStorage[place]))
 })
 
+// ЧЕКНИ ТУТ --------------------------------------------------
 // выдает всех авторов
 router.get("/authors", (req, res) => {
 
-
     res.contentType("json")
     res.end(JSON.stringify(authors))
+})
 
+// ЧЕКНИ ТУТ --------------------------------------------------
+// выдает всех юзееров
+router.get("/users", (req, res) => {
+
+    res.contentType("json")
+    res.end(JSON.stringify(users))
 })
 
 //  Возвращает читательный лист юзера
@@ -239,7 +337,7 @@ app.listen(3000, () => {
 // создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage  +++
 // удаляет книгу по айди +++
 // выдает список всех книг в booksStorage +++
-// обновлять книгу
+// обновлять книгу +++
 // выдает инфу по книге (весь объект) +++
 // удаляет книгу по айди +++
 
@@ -247,11 +345,11 @@ app.listen(3000, () => {
 
 // вовращает читательный лист юзера +++
 // добавляет юзеру книжку +++
-// выводит всех юзеров
-// выводит одного юзера
-// обновляет юзера
-// удаляем юзера
-// создаем юзера
+// выводит всех юзеров +++
+// выводит одного юзера +++
+// обновляет юзера +++
+// удаляем юзера +++
+// создаем юзера +++
 
 // читательный лист
 
