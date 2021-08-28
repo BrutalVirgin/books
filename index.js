@@ -38,6 +38,7 @@ const users = [
     { id: 3, userId: 3, name: "Kirill" },
 ]
 
+// Не доделал еще
 // создавать чительный лист
 router.post("/readinglist/:userId/:booksIds", (req, res) => {
     const userId = Number(req.params.userId)
