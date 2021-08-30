@@ -38,8 +38,32 @@ const users = [
     { id: 3, userId: 3, name: "Kirill" },
 ]
 
-// Не доделал еще
-// создавать чительный лист
+// ЧЕКНИ ТУТ --------------------------------------------------
+// удалять читательный лист
+router.delete("/readinglist/:userid", (req, res) => {
+    const findUser = users.find((user) => {
+        return user.userId === Number(req.params.userid)
+    })
+    if (!findUser) {
+        return res.end(`user ${userId} not found`)
+    }
+    const findReadListUSer = ReadingListStorage.find((userId) => {
+        return userId.userId === Number(req.params.userid)
+    })
+    if (!findReadListUSer) {
+        return res.end(`user ${userId} havent reading list`)
+    }
+    const getReadListUserId = ReadingListStorage.indexOf(findReadListUSer)
+    if (findUser && findReadListUSer) {
+        ReadingListStorage.splice(getReadListUserId, 1)
+    }
+
+    res.contentType("json")
+    res.end(JSON.stringify(ReadingListStorage))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// создавать чительный листPpp
 router.post("/readinglist/:userId/:booksIds", (req, res) => {
     const userId = Number(req.params.userId)
     const findUser = users.find((user) => {
@@ -48,14 +72,17 @@ router.post("/readinglist/:userId/:booksIds", (req, res) => {
     if (!findUser) {
         return res.end(`user ${userId} not found`)
     }
-    for (user of ReadingListStorage) {
-        if (user.userId === userId) {
-            return res.end(`user ${userId} already have a reading list`)
-        }
-        else if (user.userId !== userId) {
-            const newList = { id: ReadingListStorage.length + 1, userId: req.params.userId, booksIds: [req.params.booksIds] }
-            ReadingListStorage.push(newList)
-        }
+    const readUsersIds = ReadingListStorage.map(id => {
+        return id.userId
+    })
+
+    if (readUsersIds.includes(userId) === true) {
+        return res.end(`user ${userId} already have a reading list`)
+    }
+
+    if (!readUsersIds.includes(userId)) {
+        const newList = { id: ReadingListStorage.length + 1, userId: Number(req.params.userId), booksIds: [Number(req.params.booksIds)] }
+        ReadingListStorage.push(newList)
     }
 
     res.contentType("json")
@@ -354,8 +381,8 @@ app.listen(3000, () => {
 
 // читательный лист
 
-// создавать чительный лист
-// удалять читательный лист
+// создавать чительный лист +++
+// удалять читательный лист +++
 // обновляем читательный лист
 // получать читательный лист 
 
