@@ -30,6 +30,7 @@ const authors = [
 const ReadingListStorage = [
     { id: 1, userId: 1, booksIds: [1, 3, 6] },
     { id: 2, userId: 2, booksIds: [4] },
+    { id: 3, userId: 3, booksIds: [2, 5] },
 ]
 
 const users = [
@@ -38,6 +39,92 @@ const users = [
     { id: 3, userId: 3, name: "Kirill" },
 ]
 
+// ЧЕКНИ ТУТ --------------------------------------------------
+// получить автора
+router.get("/authors/author/:name", (req, res) => {
+    const findAuthor = authors.find((author) => {
+        return author.name === req.params.name
+    })
+    if (!findAuthor) {
+        return res.end(`author ${req.params.name} not found`)
+    }
+
+    const author = { id: findAuthor.id, name: req.params.name }
+
+    res.contentType("json")
+    res.end(JSON.stringify(author))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// обновить автора
+router.put("/authors/author/:id/:name", (req, res) => {
+    const findAuthor = authors.find((author) => {
+        return author.id === Number(req.params.id)
+    })
+    if (!findAuthor) {
+        res.end(`author with id ${req.params.id} not found`)
+    }
+    const updatedAuthor = { id: findAuthor.id, name: req.params.name }
+    authors[authors.indexOf(findAuthor)] = updatedAuthor
+
+    res.contentType("json")
+    res.end(JSON.stringify(authors))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// спросить про удаление айдишников
+// удалить автора
+router.delete("/authors/author/:name", (req, res) => {
+    const findUser = authors.find((user) => {
+        return user.name === req.params.name
+    })
+    if (!findUser) {
+        return res.end(`author ${req.params.name} not found`)
+    }
+    const position = authors.indexOf(findUser)
+    authors.splice(position, 1)
+
+    res.contentType("json")
+    res.end(JSON.stringify(authors))
+})
+
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// создать автора
+router.post("/authors/author/:name", (req, res) => {
+    const newAuthor = { id: authors.length + 1, name: req.params.name }
+    authors.push(newAuthor)
+
+    res.contentType("json")
+    res.end(JSON.stringify(authors))
+})
+
+// ЧЕКНИ ТУТ --------------------------------------------------
+// получать читательный лист 
+router.get("/readinglist", (req, res) => {
+
+    res.contentType("json")
+    res.end(JSON.stringify(ReadingListStorage))
+})
+
+// убирает массив превращая в элемент, разобраться
+// обновляем читательный лист
+router.put("/readinglist/user/:id/:userId/:bookIds", (req, res) => {
+    const findUser = ReadingListStorage.find((user) => {
+        return user.userId === Number(req.params.userId)
+    })
+    if (!findUser) {
+        return res.end(`user ${findUser} not found`)
+    }
+
+    const position = ReadingListStorage.indexOf(findUser)
+    if (findUser) {
+        ReadingListStorage[position] = { id: findUser.id, userId: findUser.userId, booksIds: findUser.booksIds.push(Number(req.params.bookIds)) }
+    }
+
+    res.contentType("json")
+    res.end(JSON.stringify(ReadingListStorage))
+})
 // ЧЕКНИ ТУТ --------------------------------------------------
 // удалять читательный лист
 router.delete("/readinglist/:userid", (req, res) => {
@@ -63,7 +150,7 @@ router.delete("/readinglist/:userid", (req, res) => {
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
-// создавать чительный листPpp
+// создавать чительный лист
 router.post("/readinglist/:userId/:booksIds", (req, res) => {
     const userId = Number(req.params.userId)
     const findUser = users.find((user) => {
@@ -383,14 +470,14 @@ app.listen(3000, () => {
 
 // создавать чительный лист +++
 // удалять читательный лист +++
-// обновляем читательный лист
-// получать читательный лист 
+// обновляем читательный лист +_+
+// получать читательный лист +++
 
 //автор
 
-// создать автора
-// удалить автора
-// обновить автора
+// создать автора +++
+// удалить автора +++
+// обновить автора +++
 // получить автора
 // получить всех авторов +++
 // выдает все книги автора +++
