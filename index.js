@@ -28,7 +28,7 @@ const authors = [
 ]
 
 const ReadingListStorage = [
-    { id: 1, userId: 1, booksIds: [1, 3, 6] },
+    { id: 1, userId: 1, booksIds: [1, 3, 6,] },
     { id: 2, userId: 2, booksIds: [4] },
     { id: 3, userId: 3, booksIds: [2, 5] },
 ]
@@ -118,7 +118,10 @@ router.put("/readinglist/user/:id/:userId/:bookIds", (req, res) => {
     }
 
     const position = ReadingListStorage.indexOf(findUser)
-    if (findUser) {
+    if (findUser.booksIds.length >= 5) {
+        return res.end(`You have more than 5 books. Pashol nahui`)
+    }
+    if (findUser && findUser.booksIds.length < 5) {
         ReadingListStorage[position] = { id: findUser.id, userId: findUser.userId, booksIds: findUser.booksIds.push(Number(req.params.bookIds)) }
     }
 
