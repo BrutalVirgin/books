@@ -8,397 +8,407 @@ const router = express.Router()
 
 app.use(express.json())
 
-
-
 const booksStorage = [
-    { id: 4, name: "PIZDA", author: "Vara" },
-    { id: 2, name: "MOCHA", author: "Vitya" },
-    { id: 2, name: "MOCHA", author: "Vitya" },
-    { id: 3, name: "SISKI", author: "Kirill" },
-    { id: 1, name: "GOVNO", author: "Artem" },
-    { id: 5, name: "PIZDA 2", author: "Vara" },
-    { id: 7, name: "MOCHA 2", author: "Vitya" },
-    { id: 6, name: "SISKI 2", author: "Kirill" },
+	{ id: 4, name: "PIZDA", author: "Vara" },
+	{ id: 2, name: "MOCHA", author: "Vitya" },
+	{ id: 2, name: "MOCHA", author: "Vitya" },
+	{ id: 3, name: "SISKI", author: "Kirill" },
+	{ id: 1, name: "GOVNO", author: "Artem" },
+	{ id: 5, name: "PIZDA 2", author: "Vara" },
+	{ id: 7, name: "MOCHA 2", author: "Vitya" },
+	{ id: 6, name: "SISKI 2", author: "Kirill" },
 ]
 const authors = [
-    { id: 1, name: "Vara" },
-    { id: 2, name: "Vitya" },
-    { id: 3, name: "Kirill" },
-    { id: 4, name: "Artem" },
+	{ id: 1, name: "Vara" },
+	{ id: 2, name: "Vitya" },
+	{ id: 3, name: "Kirill" },
+	{ id: 4, name: "Artem" },
 ]
 
 const ReadingListStorage = [
-    { id: 1, userId: 1, booksIds: [1, 3, 6,] },
-    { id: 2, userId: 2, booksIds: [4] },
-    { id: 3, userId: 3, booksIds: [2, 5] },
+	{ id: 1, userId: 1, booksIds: [1, 3, 6,] },
+	{ id: 2, userId: 2, booksIds: [4] },
+	{ id: 3, userId: 3, booksIds: [2, 5] },
 ]
 
 const users = [
-    { id: 1, userId: 1, name: "Vara" },
-    { id: 2, userId: 2, name: "Vitya" },
-    { id: 3, userId: 3, name: "Kirill" },
+	{ id: 1, userId: 1, name: "Vara" },
+	{ id: 2, userId: 2, name: "Vitya" },
+	{ id: 3, userId: 3, name: "Kirill" },
 ]
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // получить автора
-router.get("/authors/author/:name", (req, res) => {
-    const findAuthor = authors.find((author) => {
-        return author.name === req.params.name
-    })
-    if (!findAuthor) {
-        return res.end(`author ${req.params.name} not found`)
-    }
+router.get("/authors/:id/:name", (req, res) => {
+	const findAuthor = authors.find((author) => {
+		return author.name === req.params.name
+	})
+	if (!findAuthor) {
+		return res.end(`author ${req.params.name} not found`)
+	}
 
-    const author = { id: findAuthor.id, name: req.params.name }
+	const author = { id: findAuthor.id, name: req.params.name }
 
-    res.contentType("json")
-    res.end(JSON.stringify(author))
+	res.contentType("json")
+	res.end(JSON.stringify(author))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // обновить автора
 router.put("/authors/author/:id/:name", (req, res) => {
-    const findAuthor = authors.find((author) => {
-        return author.id === Number(req.params.id)
-    })
-    if (!findAuthor) {
-        res.end(`author with id ${req.params.id} not found`)
-    }
-    const updatedAuthor = { id: findAuthor.id, name: req.params.name }
-    authors[authors.indexOf(findAuthor)] = updatedAuthor
+	const findAuthor = authors.find((author) => {
+		return author.id === Number(req.params.id)
+	})
+	if (!findAuthor) {
+		res.end(`author with id ${req.params.id} not found`)
+	}
+	const updatedAuthor = { id: findAuthor.id, name: req.params.name }
+	authors[authors.indexOf(findAuthor)] = updatedAuthor
 
-    res.contentType("json")
-    res.end(JSON.stringify(authors))
+	res.contentType("json")
+	res.end(JSON.stringify(authors))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // удалить автора
 router.delete("/authors/author/:name", (req, res) => {
-    const findUser = authors.find((user) => {
-        return user.name === req.params.name
-    })
-    if (!findUser) {
-        return res.end(`author ${req.params.name} not found`)
-    }
-    const position = authors.indexOf(findUser)
-    authors.splice(position, 1)
+	const findUser = authors.find((user) => {
+		return user.name === req.params.name
+	})
+	if (!findUser) {
+		return res.end(`author ${req.params.name} not found`)
+	}
+	const position = authors.indexOf(findUser)
+	authors.splice(position, 1)
 
-    res.contentType("json")
-    res.end(JSON.stringify(authors))
+	res.contentType("json")
+	res.end(JSON.stringify(authors))
 })
 
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // создать автора
+// по полям из тела
 router.post("/authors/author/:name", (req, res) => {
     const newAuthor = { id: authors.length + 1, name: req.params.name }
     authors.push(newAuthor)
 
-    res.contentType("json")
-    res.end(JSON.stringify(authors))
+	res.contentType("json")
+	res.end(JSON.stringify(authors))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // получать читательный лист 
 router.get("/readinglist", (req, res) => {
 
-    res.contentType("json")
-    res.end(JSON.stringify(ReadingListStorage))
+	res.contentType("json")
+	res.end(JSON.stringify(ReadingListStorage))
 })
 
 // обновляем читательный лист
 router.put("/readinglist/user/:id/:userId/:bookIds", (req, res) => {
-    const findUser = ReadingListStorage.find((user) => {
-        return user.userId === Number(req.params.userId)
-    })
-    if (!findUser) {
-        return res.end(`user ${findUser} not found`)
-    }
+	const findUser = ReadingListStorage.find((user) => {
+		return user.userId === Number(req.params.userId)
+	})
+	if (!findUser) {
+		return res.end(`user ${findUser} not found`)
+	}
 
-    const position = ReadingListStorage.indexOf(findUser)
-    if (findUser.booksIds.length >= 5) {
-        return res.end(`You have more than 5 books. Pashol nahui`)
-    }
-    const newArr = ReadingListStorage
-    if (findUser && findUser.booksIds.length < 5) {
-        const tmp = ReadingListStorage[position].booksIds
-        tmp.push(Number(req.params.bookIds))
-        ReadingListStorage[position] = { id: findUser.id, userId: findUser.userId, booksIds: tmp }
-    }
+	const position = ReadingListStorage.indexOf(findUser)
+	if (findUser.booksIds.length >= 5) {
+		return res.end(`You have more than 5 books. Pashol nahui`)
+	}
+	const newArr = ReadingListStorage
+	if (findUser && findUser.booksIds.length < 5) {
+		const tmp = ReadingListStorage[position].booksIds
+		tmp.push(Number(req.params.bookIds))
+		ReadingListStorage[position] = { id: findUser.id, userId: findUser.userId, booksIds: tmp }
+	}
 
-    res.contentType("json")
-    res.end(JSON.stringify(ReadingListStorage))
+	res.contentType("json")
+	res.end(JSON.stringify(ReadingListStorage))
 })
 // ЧЕКНИ ТУТ --------------------------------------------------
 // удалять читательный лист
 router.delete("/readinglist/:userid", (req, res) => {
-    const findUser = users.find((user) => {
-        return user.userId === Number(req.params.userid)
-    })
-    if (!findUser) {
-        return res.end(`user ${userId} not found`)
-    }
-    const findReadListUSer = ReadingListStorage.find((userId) => {
-        return userId.userId === Number(req.params.userid)
-    })
-    if (!findReadListUSer) {
-        return res.end(`user ${userId} havent reading list`)
-    }
-    const getReadListUserId = ReadingListStorage.indexOf(findReadListUSer)
-    if (findUser && findReadListUSer) {
-        ReadingListStorage.splice(getReadListUserId, 1)
-    }
+	const findUser = users.find((user) => {
+		return user.userId === Number(req.params.userid)
+	})
+	if (!findUser) {
+		return res.end(`user ${userId} not found`)
+	}
+	const findReadListUSer = ReadingListStorage.find((userId) => {
+		return userId.userId === Number(req.params.userid)
+	})
+	if (!findReadListUSer) {
+		return res.end(`user ${userId} havent reading list`)
+	}
+	const getReadListUserId = ReadingListStorage.indexOf(findReadListUSer)
+	if (findUser && findReadListUSer) {
+		ReadingListStorage.splice(getReadListUserId, 1)
+	}
 
-    res.contentType("json")
-    res.end(JSON.stringify(ReadingListStorage))
+	res.contentType("json")
+	res.end(JSON.stringify(ReadingListStorage))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // создавать чительный лист
+//artem: coздаем readinglist получая json с полями 
 router.post("/readinglist/:userId/:booksIds", (req, res) => {
-    const userId = Number(req.params.userId)
-    const findUser = users.find((user) => {
-        return user.userId === userId
-    })
-    if (!findUser) {
-        return res.end(`user ${userId} not found`)
-    }
-    const readUsersIds = ReadingListStorage.map(id => {
-        return id.userId
-    })
+	const userId = Number(req.params.userId)
+	const findUser = users.find((user) => {
+		return user.userId === userId
+	})
+	if (!findUser) {
+		return res.end(`user ${userId} not found`)
+	}
+	const readUsersIds = ReadingListStorage.map(id => {
+		return id.userId
+	})
 
-    if (readUsersIds.includes(userId) === true) {
-        return res.end(`user ${userId} already have a reading list`)
-    }
+	if (readUsersIds.includes(userId) === true) {
+		return res.end(`user ${userId} already have a reading list`)
+	}
 
-    if (!readUsersIds.includes(userId)) {
-        const newList = { id: ReadingListStorage.length + 1, userId: Number(req.params.userId), booksIds: [Number(req.params.booksIds)] }
-        ReadingListStorage.push(newList)
-    }
+	if (!readUsersIds.includes(userId)) {
+		const newList = { id: ReadingListStorage.length + 1, userId: Number(req.params.userId), booksIds: [Number(req.params.booksIds)] }
+		ReadingListStorage.push(newList)
+	}
 
-    res.contentType("json")
-    res.end(JSON.stringify(ReadingListStorage))
+	res.contentType("json")
+	res.end(JSON.stringify(ReadingListStorage))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // создаем юзера 
+//artem: coздаем юзера получая json с полями 
 router.post("/users/user/:userId/:name", (req, res) => {
-    const userId = Number(req.params.userId)
-    for (user of users) {
-        if (user.userId === userId)
-            return res.end(`user id ${userId} is already taken`)
-    }
-    const newUser = { id: users.length + 1, userId: req.params.userId, name: req.params.name }
-    users.push(newUser)
+	const userId = Number(req.params.userId)
+	for (user of users) {
+		if (user.userId === userId)
+			return res.end(`user id ${userId} is already taken`)
+	}
+	const newUser = { id: users.length + 1, userId: req.params.userId, name: req.params.name }
+	users.push(newUser)
 
-    res.contentType("json")
-    res.end(JSON.stringify(users))
+	res.contentType("json")
+	res.end(JSON.stringify(users))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // удаляем юзера
+// artem: /users/:id 
 router.delete("/users/user/:id", (req, res) => {
-    const getUser = users.find((user) => {
-        return user.id === Number(req.params.id)
-    })
-    if (!getUser) {
-        return res.end(`user ${req.params.id} not found`)
-    }
-    const position = users.indexOf(getUser)
-    users.splice(position, 1)
+	const getUser = users.find((user) => {
+		return user.id === Number(req.params.id)
+	})
+	if (!getUser) {
+		return res.end(`user ${req.params.id} not found`)
+	}
+	const position = users.indexOf(getUser)
+	users.splice(position, 1)
 
-    res.contentType("json")
-    res.end(JSON.stringify(users))
+	res.contentType("json")
+	res.end(JSON.stringify(users))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
-// обновляет юзера
+//artem: обновляет юзера получая json с полями 
 router.put("/users/user/:id/:userId/:name", (req, res) => {
-    const getUser = users.find((user) => {
-        return user.id === Number(req.params.id)
-    })
-    if (!getUser) {
-        return res.end(`user ${req.params.id} not found`)
-    }
+	const getUser = users.find((user) => {
+		return user.id === Number(req.params.id)
+	})
+	if (!getUser) {
+		return res.end(`user ${req.params.id} not found`)
+	}
 
-    const position = users.indexOf(getUser)
-    users[position] = { id: getUser.id, userId: req.params.userId, name: req.params.name }
+	const position = users.indexOf(getUser)
+	users[position] = { id: getUser.id, userId: req.params.userId, name: req.params.name }
 
-    res.contentType("json")
-    res.end(JSON.stringify(users[position]))
+	res.contentType("json")
+	res.end(JSON.stringify(users[position]))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // выводит одного юзера
+// artem: /users/:id 
 router.get("/users/user/:userId", (req, res) => {
-    const getUser = users.find((user) => {
-        return user.id === Number(req.params.userId)
-    })
-    if (!getUser) {
-        return res.end(`user ${req.params.userId} not found`)
-    }
-    res.contentType("json")
-    res.end(JSON.stringify(getUser))
+	const getUser = users.find((user) => {
+		return user.id === Number(req.params.userId)
+	})
+	if (!getUser) {
+		return res.end(`user ${req.params.userId} not found`)
+	}
+	res.contentType("json")
+	res.end(JSON.stringify(getUser))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // обновлять книгу
+/**
+ * artem: получаем json {
+ * 	...поля
+ * }
+ */
 router.put("/books/:id/:name/:author", (req, res) => {
-    const findBook = booksStorage.find((book) => {
-        return book.id === Number(req.params.id)
-    })
-    if (!findBook) {
-        res.end("Книга не найдена")
-        return
-    }
-    const place = booksStorage.indexOf(findBook)
-    booksStorage[place] = { id: findBook.id, name: req.params.name, author: req.params.author }
+	const findBook = booksStorage.find((book) => {
+		return book.id === Number(req.params.id)
+	})
+	if (!findBook) {
+		res.end("Книга не найдена")
+		return
+	}
+	const place = booksStorage.indexOf(findBook)
+	booksStorage[place] = { id: findBook.id, name: req.params.name, author: req.params.author }
 
-    res.contentType("json")
-    res.end(JSON.stringify(booksStorage[place]))
+	res.contentType("json")
+	res.end(JSON.stringify(booksStorage[place]))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // выдает всех авторов
 router.get("/authors", (req, res) => {
 
-    res.contentType("json")
-    res.end(JSON.stringify(authors))
+	res.contentType("json")
+	res.end(JSON.stringify(authors))
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
 // выдает всех юзееров
 router.get("/users", (req, res) => {
 
-    res.contentType("json")
-    res.end(JSON.stringify(users))
+	res.contentType("json")
+	res.end(JSON.stringify(users))
 })
 
 //  Возвращает читательный лист юзера
+
 router.get("/user/:userId/readinglist", (req, res) => {
-    const userBooksStorage = []
-    const findUser = ReadingListStorage.find((user) => {
-        return user.id === Number(req.params.userId)
-    })
-    for (var i = 0; i <= findUser.booksIds.length; i++) {
-        for (book of booksStorage) {
-            if (book.id === findUser.booksIds[i]) {
-                userBooksStorage.push(book)
-            }
-        }
-    }
-    res.contentType("json")
-    res.end(JSON.stringify(userBooksStorage))
+	const userBooksStorage = []
+	const findUser = ReadingListStorage.find((user) => {
+		return user.id === Number(req.params.userId)
+	})
+	for (var i = 0; i <= findUser.booksIds.length; i++) {
+		for (book of booksStorage) {
+			if (book.id === findUser.booksIds[i]) {
+				userBooksStorage.push(book)
+			}
+		}
+	}
+	res.contentType("json")
+	res.end(JSON.stringify(userBooksStorage))
 })
 
 
 // Добавляет юзеру книжку
+// artem: :bookId должен передаваться в теле запроса
 router.post("/user/:userId/readinglist/:bookId", (req, res) => {
-    const bookId = Number(req.params.bookId)
-    const userId = Number(req.params.userId)
+	const bookId = Number(req.params.bookId)
+	const userId = Number(req.params.userId)
 
-    const user = users.find((user) => {
-        return user.id === userId
-    })
-    if (!user) {
-        res.end(`user ${userId} not found`)
-        return
-    }
-    const bookToAdd = booksStorage.find(b => b.id === bookId)
-    if (!bookToAdd) {
-        res.end(`book ${bookId} not found`)
-        return
-    }
+	const user = users.find((user) => {
+		return user.id === userId
+	})
+	if (!user) {
+		res.end(`user ${userId} not found`)
+		return
+	}
+	const bookToAdd = booksStorage.find(b => b.id === bookId)
+	if (!bookToAdd) {
+		res.end(`book ${bookId} not found`)
+		return
+	}
 
-    const readingList = ReadingListStorage.find(rl => rl.userId === user.userId)
-    if (!readingList) {
-        const brandNewRL = {
-            userId,
-            id: ReadingListStorage.length + 1,
-            booksIds: [bookId]
-        }
-        res.end(JSON.stringify(brandNewRL))
-        return
-    }
+	const readingList = ReadingListStorage.find(rl => rl.userId === user.userId)
+	if (!readingList) {
+		const brandNewRL = {
+			userId,
+			id: ReadingListStorage.length + 1,
+			booksIds: [bookId]
+		}
+		res.end(JSON.stringify(brandNewRL))
+		return
+	}
 
-    if (readingList.booksIds.includes(bookId)) {
-        res.end(`user already has book ${bookId}`)
-        return
-    }
+	if (readingList.booksIds.includes(bookId)) {
+		res.end(`user already has book ${bookId}`)
+		return
+	}
 
-    const updatedRL = {
-        id: readingList.id,
-        userId: user.userId,
-        booksIds: [...readingList.booksIds, bookId]
-    }
+	const updatedRL = {
+		id: readingList.id,
+		userId: user.userId,
+		booksIds: [...readingList.booksIds, bookId]
+	}
 
-    const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
+	const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
 
-    ReadingListStorage.splice(currentRLIndex, 1)
-    ReadingListStorage.push(updatedRL)
+	ReadingListStorage.splice(currentRLIndex, 1)
+	ReadingListStorage.push(updatedRL)
 
-    // for (readingList of ReadingListStorage) {
-    //     if (readingList.userId === user.userId) {
-    //         for (var i = 0; i <= readingList.booksIds.length; i++) {
-    //             const rlBookId = readingList.booksIds[i]
+	// for (readingList of ReadingListStorage) {
+	//     if (readingList.userId === user.userId) {
+	//         for (var i = 0; i <= readingList.booksIds.length; i++) {
+	//             const rlBookId = readingList.booksIds[i]
 
-    //             if (rlBookId === bookId) {
-    //                 console.log("Книга уже есть")
-    //                 break
-    //             }
-    //             else if (bookId !== rlBookId) {
-    //                 let newId = ReadingListStorage.length + 1
-    //                 const takeABook = { id: newId, userId: user.id, booksIds: [requiredBook.id] }
-    //                 ReadingListStorage.push(takeABook)
-    //             }
-    //         }
-    //     }
-    // }
+	//             if (rlBookId === bookId) {
+	//                 console.log("Книга уже есть")
+	//                 break
+	//             }
+	//             else if (bookId !== rlBookId) {
+	//                 let newId = ReadingListStorage.length + 1
+	//                 const takeABook = { id: newId, userId: user.id, booksIds: [requiredBook.id] }
+	//                 ReadingListStorage.push(takeABook)
+	//             }
+	//         }
+	//     }
+	// }
 
-    res.contentType("json")
-    res.end(JSON.stringify(updatedRL))
+	res.contentType("json")
+	res.end(JSON.stringify(updatedRL))
 })
 
 // Выдает список всех книг в booksStorage
 router.get("/books", (req, res) => {
-    console.log("GET")
+	console.log("GET")
 
-    // impl
-    res.contentType("json")
-    res.end(JSON.stringify(booksStorage))
+	// impl
+	res.contentType("json")
+	res.end(JSON.stringify(booksStorage))
 })
 
 // выдает инфу по книге (весь объект)
 router.get("/books/:id", (req, res) => {
-    console.log("GET BOOK", req.params.id)
+	console.log("GET BOOK", req.params.id)
 
-    const book = booksStorage.find((book) => {
-        return book.id === Number(req.params.id)
-    })
-    if (!book) {
-        res.end("nahiu")
-        return
-    }
+	const book = booksStorage.find((book) => {
+		return book.id === Number(req.params.id)
+	})
+	if (!book) {
+		res.end("nahiu")
+		return
+	}
 
-    res.contentType("json")
-    res.end(JSON.stringify(book))
+	res.contentType("json")
+	res.end(JSON.stringify(book))
 })
 // выдает все книги автора
 router.get("/authors/:id/books", (req, res) => {
-    const authorBooks = []
+	const authorBooks = []
 
-    const author = authors.find((author) => {
-        return author.id === Number(req.params.id)
-    })
+	const author = authors.find((author) => {
+		return author.id === Number(req.params.id)
+	})
 
-    for (book of booksStorage) {
-        if (author.name === book.author) {
-            authorBooks.push(book)
-        }
-    }
+	for (book of booksStorage) {
+		if (author.name === book.author) {
+			authorBooks.push(book)
+		}
+	}
 
-    res.contentType("json")
-    res.end(JSON.stringify(authorBooks))
+	res.contentType("json")
+	res.end(JSON.stringify(authorBooks))
 })
 
 
@@ -416,72 +426,81 @@ router.get("/authors/:id/books", (req, res) => {
 
 
 // создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage 
+/**
+ * принимаем json { name: "Vitya", author: "2" }
+ * создается без полей {
+		"id": 9
+	}
+ */
 router.post("/books/", (req, res) => {
-    console.log("POST /books", req.body)
+	console.log("POST /books", req.body)
 
-    let newId = booksStorage.length + 1
-    const newBook = { id: newId, name: req.params.name, author: req.params.author }
-    booksStorage.push(newBook)
+	let newId = booksStorage.length + 1
+	const newBook = { id: newId, name: req.params.name, author: req.params.author }
+	booksStorage.push(newBook)
 
-    res.contentType("json")
-    res.end(JSON.stringify(booksStorage))
+	res.contentType("json")
+	res.end(JSON.stringify(booksStorage))
 })
 
 // удаляет книгу по айди
 router.delete("/books/:id", (req, res) => {
 
-    const place = booksStorage.find((place) => {
-        return place.id === Number(req.params.id)
-    })
-    if (!place) {
-        res.end("nahui")
-        return
-    }
-    booksStorage.splice(booksStorage.indexOf(place), 1)
+	const place = booksStorage.find((place) => {
+		return place.id === Number(req.params.id)
+	})
+	if (!place) {
+		res.end("nahui")
+		return
+	}
+	booksStorage.splice(booksStorage.indexOf(place), 1)
 
-    res.contentType("json")
-    res.end(JSON.stringify(booksStorage))
+	res.contentType("json")
+	res.end(JSON.stringify(booksStorage))
 })
 
 
 app.use(router)
 
 app.listen(3000, () => {
-    console.log("process.pid", process.pid)
-    console.log("RUNNIN")
+	console.log("process.pid", process.pid)
+	console.log("RUNNIN")
 })
 
 // Книга
 
-// создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage  +++
-// удаляет книгу по айди +++
-// выдает список всех книг в booksStorage +++
-// обновлять книгу +++
-// выдает инфу по книге (весь объект) +++
-// удаляет книгу по айди +++
+// создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage  +++ -
+// удаляет книгу по айди +++ +
+// выдает список всех книг в booksStorage +++ +
+// обновлять книгу +++ -
+// выдает инфу по книге (весь объект) +++ +
 
 // юзер
 
-// вовращает читательный лист юзера +++
-// добавляет юзеру книжку +++
-// выводит всех юзеров +++
-// выводит одного юзера +++
-// обновляет юзера +++
-// удаляем юзера +++
-// создаем юзера +++
+// выводит всех юзеров +++ GET /users/
+// вовращает читательный лист юзера +++ +
+// добавляет юзеру книжку +++ -
+// выводит одного юзера +++ -
+// обновляет юзера +++ -
+// удаляем юзера +++ -
+// создаем юзера +++ -
 
 // читательный лист
 
-// создавать чительный лист +++
-// удалять читательный лист +++
-// обновляем читательный лист +_+
-// получать читательный лист +++
+// создавать чительный лист +++ -
+// удалять читательный лист +++ -
+// обновляем читательный лист +_+ -
+// получать читательный лист +++ +
 
 //автор
 
-// создать автора +++
-// удалить автора +++
-// обновить автора +++
-// получить автора
-// получить всех авторов +++
-// выдает все книги автора +++
+// создать автора +++ -
+// удалить автора +++ -
+// обновить автора +++ -
+// получить автора - -
+// получить всех авторов +++ +
+// выдает все книги автора +++ +
+
+// сгрупировать все роуты под тз
+// https://github.com/Kikobeats/awesome-api
+// пофиксить пути на всех рутах шобы они были R3ST
