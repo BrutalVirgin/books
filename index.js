@@ -72,7 +72,6 @@ router.put("/authors/author/:id/:name", (req, res) => {
 })
 
 // ЧЕКНИ ТУТ --------------------------------------------------
-// спросить про удаление айдишников
 // удалить автора
 router.delete("/authors/author/:name", (req, res) => {
     const findUser = authors.find((user) => {
@@ -107,7 +106,6 @@ router.get("/readinglist", (req, res) => {
     res.end(JSON.stringify(ReadingListStorage))
 })
 
-// убирает массив превращая в элемент, разобраться
 // обновляем читательный лист
 router.put("/readinglist/user/:id/:userId/:bookIds", (req, res) => {
     const findUser = ReadingListStorage.find((user) => {
@@ -121,8 +119,11 @@ router.put("/readinglist/user/:id/:userId/:bookIds", (req, res) => {
     if (findUser.booksIds.length >= 5) {
         return res.end(`You have more than 5 books. Pashol nahui`)
     }
+    const newArr = ReadingListStorage
     if (findUser && findUser.booksIds.length < 5) {
-        ReadingListStorage[position] = { id: findUser.id, userId: findUser.userId, booksIds: findUser.booksIds.push(Number(req.params.bookIds)) }
+        const tmp = ReadingListStorage[position].booksIds
+        tmp.push(Number(req.params.bookIds))
+        ReadingListStorage[position] = { id: findUser.id, userId: findUser.userId, booksIds: tmp }
     }
 
     res.contentType("json")
