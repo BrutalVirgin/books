@@ -123,8 +123,8 @@ router.get("/authors/:id/books", (req, res) => {
 // _________________________________________________________________________________________________________
 // создавать чительный лист
 //artem: coздаем readinglist получая json с полями 
-router.post("/readinglist/:userId", (req, res) => {
-	const userId = Number(req.params.userId)
+router.post("/readinglist/:id", (req, res) => {
+	const userId = Number(req.body.userId)
 	const findUser = users.find((user) => {
 		return user.userId === userId
 	})
@@ -140,7 +140,7 @@ router.post("/readinglist/:userId", (req, res) => {
 	}
 
 	if (!readUsersIds.includes(userId)) {
-		const newList = { id: ReadingListStorage.length + 1, userId: Number(req.params.userId), booksIds: [req.body.booksIds] }
+		const newList = { id: ReadingListStorage.length + 1, userId: Number(req.body.userId), booksIds: req.body.booksIds }
 		ReadingListStorage.push(newList)
 	}
 
@@ -149,18 +149,18 @@ router.post("/readinglist/:userId", (req, res) => {
 })
 
 // удалять читательный лист
-router.delete("/readinglist/:userId", (req, res) => {
+router.delete("/readinglist/:id", (req, res) => {
 	const findUser = users.find((user) => {
-		return user.userId === Number(req.params.userId)
+		return user.id === Number(req.params.id)
 	})
 	if (!findUser) {
-		return res.end(`user ${req.params.userId} not found`)
+		return res.end(`user ${req.body.userId} not found`)
 	}
 	const findReadListUser = ReadingListStorage.find((userId) => {
-		return userId.userId === Number(req.params.userId)
+		return userId.id === Number(req.params.id)
 	})
 	if (!findReadListUser) {
-		return res.end(`user ${req.params.userId} havent reading list`)
+		return res.end(`user ${req.params.id} havent reading list`)
 	}
 	const getReadListUserId = ReadingListStorage.indexOf(findReadListUser)
 	if (findUser && findReadListUser) {
@@ -211,13 +211,13 @@ router.get("/users", (req, res) => {
 })
 
 //  Возвращает читательный лист юзера
-router.get("/user/:userId/readinglist", (req, res) => {
+router.get("/user/:id/readinglist", (req, res) => {
 	const userBooksStorage = []
 	const findUser = ReadingListStorage.find((user) => {
-		return user.userId === Number(req.params.userId)
+		return user.id === Number(req.params.id)
 	})
 	if (!findUser) {
-		return res.end(`user ${req.params.userId} not found`)
+		return res.end(`user ${req.params.id} not found`)
 	}
 	for (var i = 0; i <= findUser.booksIds.length; i++) {
 		for (book of booksStorage) {
@@ -226,15 +226,16 @@ router.get("/user/:userId/readinglist", (req, res) => {
 			}
 		}
 	}
+
 	res.contentType("json")
 	res.end(JSON.stringify(userBooksStorage))
 })
 
 // Добавляет юзеру книжку
 // artem: :bookId должен передаваться в теле запроса
-router.post("/user/:userId/readinglist", (req, res) => {
+router.post("/user/:id/readinglist", (req, res) => {
 	const bookId = Number(req.body.bookId)
-	const userId = Number(req.params.userId)
+	const userId = Number(req.params.id)
 
 	const user = users.find((user) => {
 		return user.id === userId
@@ -441,10 +442,10 @@ app.listen(3000, () => {
 // router.get("/users"
 
 // вовращает читательный лист юзера +++ +
-// router.get("/user/:userId/readinglist"
+// router.get("/user/:id/readinglist
 
 // добавляет юзеру книжку +++ -
-// router.post("/user/:userId/readinglist"
+// router.post("/user/:id/readinglist
 
 // выводит одного юзера +++ -
 // router.get("/users/:id"
@@ -461,10 +462,10 @@ app.listen(3000, () => {
 // ЧИТАТЕЛЬНЫЙ ЛИСТ
 
 // создавать чительный лист +++ -
-// router.post("/readinglist/:userId"
+// router.post("/readinglist/:id
 
 // удалять читательный лист +++ -
-// router.delete("/readinglist/:userId"
+// router.delete("/readinglist/:id
 
 // обновляем читательный лист +_+ -
 // router.put("/readinglist/:id"
