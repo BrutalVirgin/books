@@ -8,6 +8,8 @@ const router = express.Router()
 
 app.use(express.json())
 
+
+// DRY donut repit yourself https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
 const booksStorage = [
 	{ id: 4, name: "PIZDA", author: "Vara" },
 	{ id: 2, name: "MOCHA", author: "Vitya" },
@@ -64,6 +66,7 @@ router.delete("/authors/:id", (req, res) => {
 
 // обновить автора
 router.put("/authors/:id", (req, res) => {
+
 	const findAuthor = authors.find((author) => {
 		return author.id === Number(req.params.id)
 	})
@@ -85,8 +88,6 @@ router.get("/authors/:id", (req, res) => {
 	if (!findAuthor) {
 		return res.end(`author with id ${req.params.id} not found`)
 	}
-
-	const author = { id: findAuthor.id, name: findAuthor.name }
 
 	res.contentType("json")
 	res.end(JSON.stringify(author))
@@ -135,7 +136,7 @@ router.post("/readinglist/:id", (req, res) => {
 		return id.userId
 	})
 
-	if (readUsersIds.includes(userId) === true) {
+	if (readUsersIds.includes(userId)) {
 		return res.end(`user ${userId} already have a reading list`)
 	}
 
