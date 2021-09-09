@@ -7,18 +7,25 @@ export class UserRepository {
     constructor() { }
 
     private _users: User[] = [
-        { id: 1, userId: 1, name: "Vara" },
-        { id: 2, userId: 2, name: "Vitya" },
-        { id: 3, userId: 3, name: "Kirill" },
-        { id: 4, userId: 4, name: "sdfsfd" },
+        { id: 1, name: "Vara", email: "govno1@a.com", age: 22, createdAt: new Date(2021, 8, 9), updatedAt: new Date(2021, 8, 9) },
+        { id: 1, name: "Vitya", email: "govno2@a.com", age: 27, createdAt: new Date(2021, 8, 9), updatedAt: new Date(2021, 8, 9) },
+        { id: 1, name: "Kirill", email: "govno3@a.com", age: 25, createdAt: new Date(2021, 8, 9), updatedAt: new Date(2021, 8, 9) },
+        { id: 1, name: "Artem", email: "govno4@a.com", age: 26, createdAt: new Date(2021, 8, 9), updatedAt: new Date(2021, 8, 9) },
+
     ]
 
     /**
      * Находит дебика по айди
      * @param id 
      */
-    findUserById(id: string): User {
-        throw new Error("not implemented")
+    findUserById(id: number): User {
+        const user = this._users.find((user) => {
+            return user.id === id
+        })
+        if (!user) {
+            throw new Error("user not found")
+        }
+        return user
     }
 
     /**
@@ -27,6 +34,8 @@ export class UserRepository {
      * @param fields 
      */
     updateById(id: string, fields: Partial<User>): User {
+        id
+        fields
         throw new Error("not implemented")
     }
 }

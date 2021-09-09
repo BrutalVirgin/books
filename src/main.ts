@@ -10,7 +10,13 @@ async function main() {
     app.use(express.json())
 
     const userRepo = new UserRepository()
-    userRepo.updateById("asd", { age: 777 })
+
+    router.get("/users/:id", (req, res) => {
+        const user = userRepo.findUserById(Number(req.params.id))
+
+        res.contentType("json")
+        res.end(JSON.stringify(user))
+    })
 
     app.listen(3000, () => {
         console.log("process.pid", process.pid)
