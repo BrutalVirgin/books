@@ -282,7 +282,7 @@ router.post("/user/:id/readinglist", (req, res) => {
 	res.end(JSON.stringify(updatedRL))
 })
 
-// выводит одного юзера
+// выводит одного юзера +++
 router.get("/users/:id", (req, res) => {
 	const getUser = users.find((user) => {
 		return user.id === Number(req.params.id)
