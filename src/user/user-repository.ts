@@ -16,9 +16,14 @@ export class UserRepository {
 
     ]
 
+
+    showUsers() {
+        return this._users
+    }
+
     /**
      * Находит дебика по айди
-     * @param id 
+     * @param id  
      */
     findUserById(id: number): User {
         const user = this._users.find((user) => {

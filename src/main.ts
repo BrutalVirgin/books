@@ -2,6 +2,8 @@ import express from "express"
 
 import router from "./router"
 import { UserRepository } from "./user/user-repository"
+import { ReadingListStorage } from "./readinglist/reading-list-repository"
+import { BooksRepository } from "./book/book-repository"
 
 async function main() {
     const app = express()
@@ -10,7 +12,34 @@ async function main() {
     app.use(express.json())
 
     const userRepo = new UserRepository()
+    const readingListRepo = new ReadingListStorage()
+    const booksRepo = new BooksRepository()
 
+
+    // выдает всех юзееров
+    router.get("/users", (_req, res) => {
+        const getUsers = userRepo.showUsers()
+
+        res.contentType("json")
+        res.end(JSON.stringify(getUsers))
+    })
+
+    //  Возвращает читательный лист юзера
+    router.get("/user/:id/readinglist", (req, res) => {
+        const userBooksStorage = []
+        const findUser = readingListRepo.findUserById(Number(req.params.id))
+
+        for (var i = 0; i <= findUser.booksIds.length; i++) {
+            for (book of booksRepo) {
+                if (book.id === findUser.booksIds[i]) {
+                    userBooksStorage.push(book)
+                }
+            }
+        }
+
+        res.contentType("json")
+        res.end(JSON.stringify(userBooksStorage))
+    })
 
     // выводит одного юзера
     router.get("/users/:id", (req, res) => {
@@ -22,8 +51,9 @@ async function main() {
 
     // обновляет юзера
     router.put("/users/:id", (req, res) => {
-        const updatedUser = userRepo.updateById(req.params.id, {})
-
+        const updatedUser = userRepo.updateById(Number(req.params.id), {
+            email: req.body.email, age: Number(req.body.age), name: req.body.name
+        })
 
         res.contentType("json")
         res.end(JSON.stringify(updatedUser))
