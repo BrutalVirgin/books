@@ -204,7 +204,7 @@ router.get("/readinglist", (req, res) => {
 })
 
 // _________________________________________________________________________________________________________
-// выдает всех юзееров
+// выдает всех юзееров +++
 router.get("/users", (req, res) => {
 
 	res.contentType("json")
@@ -294,7 +294,7 @@ router.get("/users/:id", (req, res) => {
 	res.end(JSON.stringify(getUser))
 })
 
-// обновляет юзера
+// обновляет юзера +++
 //artem: обновляет юзера получая json с полями 
 router.put("/users/:id", (req, res) => {
 	const getUser = users.find((user) => {

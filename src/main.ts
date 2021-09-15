@@ -26,19 +26,12 @@ async function main() {
 
     //  Возвращает читательный лист юзера
     router.get("/user/:id/readinglist", (req, res) => {
-        const userBooksStorage = []
         const findUser = readingListRepo.findUserById(Number(req.params.id))
 
-        for (var i = 0; i <= findUser.booksIds.length; i++) {
-            for (book of booksRepo) {
-                if (book.id === findUser.booksIds[i]) {
-                    userBooksStorage.push(book)
-                }
-            }
-        }
+        const repos = booksRepo.findAllBooks(findUser.booksIds)
 
         res.contentType("json")
-        res.end(JSON.stringify(userBooksStorage))
+        res.end(JSON.stringify(repos))
     })
 
     // выводит одного юзера

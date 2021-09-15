@@ -15,5 +15,18 @@ export class BooksRepository {
     ]
 
 
+    findAllBooks(booksIds: number[]): void {
+        const userBooksStorage = []
+        for (var bookId of booksIds) {
+            for (var book of this._books) {
+                if (book.id === bookId) {
+                    const addBook: Book = {
+                        ...book,
+                    }
+                    userBooksStorage.push(addBook)
+                }
+            }
+        }
+    }
 
 }
