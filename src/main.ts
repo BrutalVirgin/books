@@ -57,4 +57,53 @@ async function main() {
     app.listen(3000, () => console.log("runnin"))
 }
 
-main()
+main
+
+
+function massivi() {
+    const arr: number[] = [
+        4,
+        1,
+        3,
+        5,
+        2,
+    ]
+
+    // сделай масив в котором есть только четные
+    // const newArr = arr.filter(a => a % 2 === 0)
+    // console.log(newArr)
+    const newArr5 = arr.reduce<number[]>((acc, curVal) => {
+
+        if (acc.length === 0 && curVal % 2 === 0) {
+            return [curVal]
+        }
+        if (curVal % 2 === 0) {
+            return acc.push(curVal)
+        }
+
+        return acc
+    }, [])
+    console.log(newArr5)
+    // сделай массив где каждый элемент больше в два раза чем  в arr
+    const newArr2 = arr.map(x => x * 2)
+    console.log(newArr2)
+    // сделай массив где каждый элемент это копия arr
+    const newArr3 = arr.slice(0, arr.length)
+    console.log(newArr3)
+    // сумма всех элементов
+    const newArr4 = arr.reduce((a, b) => a + b)
+    console.log(newArr4)
+    // отсортируй без sort
+    // arr.reduce<number[]>((acc, currVal) => {
+    //     if (acc.length === 0) {
+    //         return [currVal]
+    //     }
+    //     var accLength = acc.length
+    //     if (currVal < acc[accLength]) {
+
+    //     }
+    //     return acc
+    // }, [])
+
+}
+massivi()

@@ -5,29 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}\books"
-        },
-        {
-            "name": "Launch",
-            "program": "${workspaceFolder}/main.ts",
-            "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-        {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
+            "name": "playground",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+             "run-script",
+             "start"
             ],
-            "program": "${workspaceFolder}\\index.js"
-        }
+            "skipFiles": [
+             "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "sourceMaps": true,
+            "env": {
+             "AWS_REGION": "us-east-1",
+             "NODE_ENV": "local"
+            }
+           }
     ]
 }
