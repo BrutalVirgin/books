@@ -73,14 +73,9 @@ function massivi() {
     // const newArr = arr.filter(a => a % 2 === 0)
     // console.log(newArr)
     const newArr5 = arr.reduce<number[]>((acc, curVal) => {
-
-        if (acc.length === 0 && curVal % 2 === 0) {
-            return [curVal]
-        }
         if (curVal % 2 === 0) {
-            return acc.push(curVal)
+            return [...acc, curVal]
         }
-
         return acc
     }, [])
     console.log(newArr5)
@@ -94,16 +89,17 @@ function massivi() {
     const newArr4 = arr.reduce((a, b) => a + b)
     console.log(newArr4)
     // отсортируй без sort
-    // arr.reduce<number[]>((acc, currVal) => {
-    //     if (acc.length === 0) {
-    //         return [currVal]
-    //     }
-    //     var accLength = acc.length
-    //     if (currVal < acc[accLength]) {
-
-    //     }
-    //     return acc
-    // }, [])
+    arr.reduce<number[]>((acc, currVal) => {
+        if (acc.length === 0) {
+            return [currVal]
+        }
+        var i = 0
+        const prev = acc[i]
+        if (prev! > currVal) {
+            return [currVal]
+        }
+        return acc
+    }, [])
 
 }
 massivi()
