@@ -15,7 +15,7 @@ export class BooksRepository {
     ]
 
 
-    findAllBooks(booksIds: number[]): void {
+    findAllBooks(booksIds: number[]) {
         const userBooksStorage = []
         for (var bookId of booksIds) {
             for (var book of this._books) {
@@ -27,6 +27,7 @@ export class BooksRepository {
                 }
             }
         }
+        return userBooksStorage
     }
 
 }
