@@ -36,7 +36,7 @@ export class UserRepository {
     }
 
     /**
-     * 
+     * Обновляет юзера по айди
      * @param id 
      * @param fields 
      */

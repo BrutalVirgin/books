@@ -4,6 +4,7 @@ import router from "./router"
 import { UserRepository } from "./user/user-repository"
 import { ReadingListStorage } from "./readinglist/reading-list-repository"
 import { BooksRepository } from "./book/book-repository"
+import { read } from "fs"
 
 async function main() {
     const app = express()
@@ -14,6 +15,51 @@ async function main() {
     const userRepo = new UserRepository()
     const readingListRepo = new ReadingListStorage()
     const booksRepo = new BooksRepository()
+
+
+    // Добавляет юзеру книжку
+    // artem: :bookId должен передаваться в теле запроса
+    router.post("/user/:id/readinglist", (req, res) => {
+        const bookId = Number(req.body.bookId)
+        const userId = Number(req.params.id)
+
+        const user = userRepo.findUserById(userId)
+        if (!user) {
+            res.end(`user ${userId} not found`)
+            return
+        }
+        const bookToAdd = booksRepo.bookToAdd(bookId)
+        if (!bookToAdd) {
+            res.end(`book ${bookId} not found`)
+            return
+        }
+
+        const readingList = readingListRepo.findUserById(userId)
+        if (!readingList) {
+            const brandNewRL = readingListRepo.createNewRl(userId, bookToAdd.id)
+            res.end(JSON.stringify(brandNewRL))
+            return
+        }
+
+        if (readingList.booksIds.includes(bookId)) {
+            res.end(`user already has book ${bookId}`)
+            return
+        }
+
+        const updatedRL = {
+            id: readingList.id,
+            booksIds: [...readingList.booksIds, bookId],
+            updatedAt: new Date()
+        }
+
+        const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
+
+        ReadingListStorage.splice(currentRLIndex, 1)
+        ReadingListStorage.push(updatedRL)
+
+        res.contentType("json")
+        res.end(JSON.stringify(updatedRL))
+    })
 
 
     // выдает всех юзееров
@@ -28,7 +74,7 @@ async function main() {
     router.get("/user/:id/readinglist", (req, res) => {
         const findUser = readingListRepo.findUserById(Number(req.params.id))
 
-        const repos = booksRepo.findAllBooks(findUser.booksIds)
+        const repos = booksRepo.findMany(findUser.booksIds)
 
         res.contentType("json")
         res.end(JSON.stringify(repos))
@@ -60,7 +106,7 @@ async function main() {
 main()
 
 
-// //function massivi() {
+// function massivi() {
 //     const arr: number[] = [
 //         4,
 //         1,
@@ -70,9 +116,9 @@ main()
 //         10,
 //     ]
 
-//     // сделай масив в котором есть только четные
-//     // const newArr = arr.filter(a => a % 2 === 0)
-//     // console.log(newArr)
+    // сделай масив в котором есть только четные
+    // const newArr = arr.filter(a => a % 2 === 0)
+    // console.log(newArr)
 //     const newArr5 = arr.reduce<number[]>((acc, curVal) => {
 //         if (curVal % 2 === 0) {
 //             return [...acc, curVal]
@@ -84,8 +130,10 @@ main()
 //     const newArr2 = arr.map(x => x * 2)
 //     console.log(newArr2)
 //     // сделай массив где каждый элемент это копия arr
-//     const newArr3 = arr.slice(0, arr.length)
-//     console.log(newArr3)
+//     // const newArr3 = arr.slice(0, arr.length)
+//     // console.log(newArr3)
+//     const array = arr.map(_ => arr)
+//     console.log(array)
 //     // сумма всех элементов
 //     const newArr4 = arr.reduce((a, b) => a + b)
 //     console.log(newArr4)
@@ -93,7 +141,6 @@ main()
 //     function bubbleSort(mainArr: (number | undefined)[]) {
 //         for (var i = 0; i < mainArr.length; i++) {
 //             for (var j = mainArr.length - 1; j > i; j--) {
-//                 ``
 //                 if (mainArr[j - 1]! > mainArr[j]!) {
 //                     [mainArr[j - 1], mainArr[j]] = [mainArr[j], mainArr[j - 1]]
 //                 }

@@ -14,20 +14,22 @@ export class BooksRepository {
         { id: 6, name: "SISKI 2", author: "Kirill", createdAt: new Date() },
     ]
 
-
-    findAllBooks(booksIds: number[]) {
-        const userBooksStorage = []
-        for (var bookId of booksIds) {
-            for (var book of this._books) {
-                if (book.id === bookId) {
-                    const addBook: Book = {
-                        ...book,
-                    }
-                    userBooksStorage.push(addBook)
-                }
-            }
+    findBookById(id: number): Book {
+        const book = this._books.find((book) => {
+            return book.id === id
+        })
+        if (!book) {
+            throw new Error("book not found")
         }
-        return userBooksStorage
+        return book
     }
 
+    findMany(booksIds: number[]) {
+        return this._books.filter(b => booksIds.includes(b.id))
+    }
+
+    bookToAdd(bookId: number) {
+        const addingBook = this._books.find(b => b.id === bookId)
+        return addingBook
+    }
 }

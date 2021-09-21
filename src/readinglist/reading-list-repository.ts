@@ -25,8 +25,25 @@ export class ReadingListStorage {
         }
         return user
     }
+    /**
+     * Создает нового юзера с книжкой
+     * @param userId 
+     * @param booksIds 
+     * @returns 
+     */
+    createNewRl(userId: number, booksIds: number): ReadingList {
+        const brandNewRL = {
+            id: userId,
+            booksIds: [booksIds],
+            updatedAt: new Date()
+        }
+        return brandNewRL
+    }
 
-
+    currentRLIndex(user: number) {
+        const currentRLIndex = this._readingListStorage.findIndex(rl => rl.id === user)
+        return currentRLIndex
+    }
 
 
 }
