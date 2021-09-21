@@ -1,3 +1,4 @@
+import { Book } from "../book/book"
 import { ReadingList } from "./reading-list-storage"
 
 export class ReadingListStorage {
@@ -8,7 +9,6 @@ export class ReadingListStorage {
         { id: 2, booksIds: [4], updatedAt: new Date() },
         { id: 3, booksIds: [2, 5], updatedAt: new Date() },
     ]
-
 
 
     /**
@@ -25,6 +25,7 @@ export class ReadingListStorage {
         }
         return user
     }
+
     /**
      * Создает нового юзера с книжкой
      * @param userId 
@@ -40,11 +41,24 @@ export class ReadingListStorage {
         return brandNewRL
     }
 
-    currentRLIndex(user: number) {
-        const currentRLIndex = this._readingListStorage.findIndex(rl => rl.id === user)
-        return currentRLIndex
+    /**
+     * Возвращает весь список стораж
+     * @returns 
+     */
+    findAll() {
+        return this._readingListStorage
     }
 
+    updateRL(id: number, booksId: number) {
+        const updatedRL: ReadingList = {
+            id,
+            booksIds: [...booksIds, booksId],
+            updatedAt: new Date()
+        }
+        const position = this._readingListStorage.indexOf(this.findUserById(id))
+        const newRl = this._readingListStorage.splice(position, 1, this.updatedRL)
+        return newRl
+    }
 
 }
 

@@ -4,7 +4,6 @@ import router from "./router"
 import { UserRepository } from "./user/user-repository"
 import { ReadingListStorage } from "./readinglist/reading-list-repository"
 import { BooksRepository } from "./book/book-repository"
-import { read } from "fs"
 
 async function main() {
     const app = express()
@@ -19,47 +18,47 @@ async function main() {
 
     // Добавляет юзеру книжку
     // artem: :bookId должен передаваться в теле запроса
-    router.post("/user/:id/readinglist", (req, res) => {
-        const bookId = Number(req.body.bookId)
-        const userId = Number(req.params.id)
+    // router.post("/user/:id/readinglist", (req, res) => {
+    //     const bookId = Number(req.body.bookId)
+    //     const userId = Number(req.params.id)
 
-        const user = userRepo.findUserById(userId)
-        if (!user) {
-            res.end(`user ${userId} not found`)
-            return
-        }
-        const bookToAdd = booksRepo.bookToAdd(bookId)
-        if (!bookToAdd) {
-            res.end(`book ${bookId} not found`)
-            return
-        }
+    //     const user = userRepo.findUserById(userId)
+    //     if (!user) {
+    //         res.end(`user ${userId} not found`)
+    //         return
+    //     }
+    //     const bookToAdd = booksRepo.bookToAdd(bookId)
+    //     if (!bookToAdd) {
+    //         res.end(`book ${bookId} not found`)
+    //         return
+    //     }
 
-        const readingList = readingListRepo.findUserById(userId)
-        if (!readingList) {
-            const brandNewRL = readingListRepo.createNewRl(userId, bookToAdd.id)
-            res.end(JSON.stringify(brandNewRL))
-            return
-        }
+    //     const readingList = readingListRepo.findUserById(userId)
+    //     if (!readingList) {
+    //         const brandNewRL = readingListRepo.createNewRl(userId, bookToAdd.id)
+    //         res.end(JSON.stringify(brandNewRL))
+    //         return
+    //     }
 
-        if (readingList.booksIds.includes(bookId)) {
-            res.end(`user already has book ${bookId}`)
-            return
-        }
+    //     if (readingList.booksIds.includes(bookId)) {
+    //         res.end(`user already has book ${bookId}`)
+    //         return
+    //     }
 
-        const updatedRL = {
-            id: readingList.id,
-            booksIds: [...readingList.booksIds, bookId],
-            updatedAt: new Date()
-        }
+    //     const updatedRL = {
+    //         id: readingList.id,
+    //         booksIds: [...readingList.booksIds, bookId],
+    //         updatedAt: new Date()
+    //     }
 
-        const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
+    //     const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
 
-        ReadingListStorage.splice(currentRLIndex, 1)
-        ReadingListStorage.push(updatedRL)
+    //     ReadingListStorage.splice(currentRLIndex, 1)
+    //     ReadingListStorage.push(updatedRL)
 
-        res.contentType("json")
-        res.end(JSON.stringify(updatedRL))
-    })
+    //     res.contentType("json")
+    //     res.end(JSON.stringify(updatedRL))
+    // })
 
 
     // выдает всех юзееров
@@ -98,10 +97,16 @@ async function main() {
         res.end(JSON.stringify(updatedUser))
     })
 
+
+
+
+
     app.use(router)
 
     app.listen(3000, () => console.log("runnin"))
 }
+
+
 
 main()
 
