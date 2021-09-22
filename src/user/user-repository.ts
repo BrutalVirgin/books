@@ -1,7 +1,5 @@
 import { User } from "./user"
 
-type UpdateUserFields = Partial<Pick<User, "email" | "age" | "name">>
-
 /**
  * Содержит логику хранения и извлечения юзера
  */
@@ -17,12 +15,12 @@ export class UserRepository {
     ]
 
 
-    showUsers() {
+    showAllUsers() {
         return this._users
     }
 
     /**
-     * Находит дебика по айди
+     * Находит юзера по айди
      * @param id  
      */
     findUserById(id: number): User {
@@ -35,22 +33,5 @@ export class UserRepository {
         return user
     }
 
-    /**
-     * Обновляет юзера по айди
-     * @param id 
-     * @param fields 
-     */
-    updateById(id: number, fields: UpdateUserFields): User {
-        const user = this.findUserById(id)
-        const position = this._users.indexOf(user)
-        const updatedUser: User = {
-            ...user,
-            ...fields,
-            updatedAt: new Date(),
-        }
 
-        this._users[position] = updatedUser
-
-        return updatedUser
-    }
 }

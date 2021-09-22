@@ -1,4 +1,4 @@
-import { Book } from "../book/book"
+//import { Book } from "../book/book"
 import { ReadingList } from "./reading-list-storage"
 
 export class ReadingListStorage {
@@ -49,16 +49,22 @@ export class ReadingListStorage {
         return this._readingListStorage
     }
 
-    updateRL(id: number, booksId: number) {
-        const updatedRL: ReadingList = {
-            id,
-            booksIds: [...booksIds, booksId],
-            updatedAt: new Date()
-        }
-        const position = this._readingListStorage.indexOf(this.findUserById(id))
-        const newRl = this._readingListStorage.splice(position, 1, this.updatedRL)
-        return newRl
-    }
+    /**
+     * Обновляет ридинг лист
+     * @param id 
+     * @param booksId 
+     * @returns 
+     */
+    // updateRL(id: number, booksId: number) {
+    //     const updatedRL: ReadingList = {
+    //         id,
+    //         booksIds: [booksId],
+    //         updatedAt: new Date()
+    //     }
+    //     const position = this._readingListStorage.indexOf(this.findUserById(id))
+    //     const newRl = this._readingListStorage.splice(position, 1, this.updatedRL)
+    //     return newRl
+    // }
 
 }
 

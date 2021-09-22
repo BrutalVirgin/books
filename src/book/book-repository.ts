@@ -41,7 +41,7 @@ export class BooksRepository {
      * @param bookId 
      * @returns 
      */
-    bookToAdd(bookId: number) {
+    findBook(bookId: number) {
         const addingBook = this._books.find(b => b.id === bookId)
         return addingBook
     }

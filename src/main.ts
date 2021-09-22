@@ -18,52 +18,52 @@ async function main() {
 
     // Добавляет юзеру книжку
     // artem: :bookId должен передаваться в теле запроса
-    // router.post("/user/:id/readinglist", (req, res) => {
-    //     const bookId = Number(req.body.bookId)
-    //     const userId = Number(req.params.id)
+    router.post("/user/:id/readinglist", (req, res) => {
+        const bookId = Number(req.body.bookId)
+        const userId = Number(req.params.id)
 
-    //     const user = userRepo.findUserById(userId)
-    //     if (!user) {
-    //         res.end(`user ${userId} not found`)
-    //         return
-    //     }
-    //     const bookToAdd = booksRepo.bookToAdd(bookId)
-    //     if (!bookToAdd) {
-    //         res.end(`book ${bookId} not found`)
-    //         return
-    //     }
+        const user = userRepo.findUserById(userId)
+        if (!user) {
+            res.end(`user ${userId} not found`)
+            return
+        }
+        const bookToAdd = booksRepo.findBook(bookId)
+        if (!bookToAdd) {
+            res.end(`book ${bookId} not found`)
+            return
+        }
 
-    //     const readingList = readingListRepo.findUserById(userId)
-    //     if (!readingList) {
-    //         const brandNewRL = readingListRepo.createNewRl(userId, bookToAdd.id)
-    //         res.end(JSON.stringify(brandNewRL))
-    //         return
-    //     }
+        const readingList = readingListRepo.findUserById(userId)
+        if (!readingList) {
+            const brandNewRL = readingListRepo.createNewRl(userId, bookToAdd.id)
+            res.end(JSON.stringify(brandNewRL))
+            return
+        }
 
-    //     if (readingList.booksIds.includes(bookId)) {
-    //         res.end(`user already has book ${bookId}`)
-    //         return
-    //     }
+        if (readingList.booksIds.includes(bookId)) {
+            res.end(`user already has book ${bookId}`)
+            return
+        }
 
-    //     const updatedRL = {
-    //         id: readingList.id,
-    //         booksIds: [...readingList.booksIds, bookId],
-    //         updatedAt: new Date()
-    //     }
+        const updatedRL = {
+            id: readingList.id,
+            booksIds: [...readingList.booksIds, bookId],
+            updatedAt: new Date()
+        }
 
-    //     const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
+        const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
 
-    //     ReadingListStorage.splice(currentRLIndex, 1)
-    //     ReadingListStorage.push(updatedRL)
+        ReadingListStorage.splice(currentRLIndex, 1)
+        ReadingListStorage.push(updatedRL)
 
-    //     res.contentType("json")
-    //     res.end(JSON.stringify(updatedRL))
-    // })
+        res.contentType("json")
+        res.end(JSON.stringify(updatedRL))
+    })
 
 
     // выдает всех юзееров
     router.get("/users", (_req, res) => {
-        const getUsers = userRepo.showUsers()
+        const getUsers = userRepo.showAllUsers()
 
         res.contentType("json")
         res.end(JSON.stringify(getUsers))
@@ -89,16 +89,20 @@ async function main() {
 
     // обновляет юзера
     router.put("/users/:id", (req, res) => {
-        const updatedUser = userRepo.updateById(Number(req.params.id), {
-            email: req.body.email, age: Number(req.body.age), name: req.body.name
-        })
+        const userId = Number(req.params.id)
+        var updatedUser = userRepo.findUserById(userId)
+        updatedUser = {
+            id: userId,
+            name: req.body.name,
+            email: req.body.email,
+            age: Number(req.body.age),
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }
 
         res.contentType("json")
         res.end(JSON.stringify(updatedUser))
     })
-
-
-
 
 
     app.use(router)
