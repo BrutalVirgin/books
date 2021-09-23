@@ -14,7 +14,6 @@ export class UserRepository {
 
     ]
 
-
     showAllUsers() {
         return this._users
     }

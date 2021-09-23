@@ -1,5 +1,5 @@
 //import { Book } from "../book/book"
-import { ReadingList } from "./reading-list-storage"
+import { ReadingList } from "./reading-list"
 
 export class ReadingListStorage {
     constructor() { }

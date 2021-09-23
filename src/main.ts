@@ -4,6 +4,7 @@ import router from "./router"
 import { UserRepository } from "./user/user-repository"
 import { ReadingListStorage } from "./readinglist/reading-list-repository"
 import { BooksRepository } from "./book/book-repository"
+import { BookService } from "../src/book/book.service"
 
 async function main() {
     const app = express()
@@ -15,10 +16,14 @@ async function main() {
     const readingListRepo = new ReadingListStorage()
     const booksRepo = new BooksRepository()
 
+    const booksService = new BookService(booksRepo)
+
 
     // Добавляет юзеру книжку
     // artem: :bookId должен передаваться в теле запроса
     router.post("/user/:id/readinglist", (req, res) => {
+
+
         const bookId = Number(req.body.bookId)
         const userId = Number(req.params.id)
 
