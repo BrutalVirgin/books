@@ -12,7 +12,7 @@ export class ReadingListStorage {
 
 
     /**
-     * Находит дебика по айди
+     * Находит юзера по айди
      * @param id 
      * @returns 
      */
@@ -27,7 +27,7 @@ export class ReadingListStorage {
     }
 
     /**
-     * Создает нового юзера с книжкой
+     * Создает нового юзера с книжкой и добавляет в стораж
      * @param userId 
      * @param booksIds 
      * @returns 
@@ -38,6 +38,7 @@ export class ReadingListStorage {
             booksIds: [booksIds],
             updatedAt: new Date()
         }
+        this._readingListStorage.push(brandNewRL)
         return brandNewRL
     }
 
@@ -55,16 +56,18 @@ export class ReadingListStorage {
      * @param booksId 
      * @returns 
      */
-    // updateRL(id: number, booksId: number) {
-    //     const updatedRL: ReadingList = {
-    //         id,
-    //         booksIds: [booksId],
-    //         updatedAt: new Date()
-    //     }
-    //     const position = this._readingListStorage.indexOf(this.findUserById(id))
-    //     const newRl = this._readingListStorage.splice(position, 1, this.updatedRL)
-    //     return newRl
-    // }
+    updateRL(id: number, booksId: number) {
+        const user = this.findUserById(id)
+
+        const updatedRL: ReadingList = {
+            id,
+            booksIds: [...user.booksIds, booksId],
+            updatedAt: new Date()
+        }
+        const position = this._readingListStorage.indexOf(this.findUserById(id))
+        const newRl = this._readingListStorage.splice(position, 1, updatedRL)
+        return newRl
+    }
 
 }
 

@@ -31,6 +31,17 @@ export class UserRepository {
         }
         return user
     }
+    /**
+     * Всунуть в стораж обновленного юзера
+     * @param user 
+     * @returns 
+     */
+    insertCurrentUSer(user: User) {
+        const position = this._users.indexOf(this.findUserById(user.id))
+        const updatedUSer = this._users.splice(position, 1, user)
+
+        return updatedUSer
+    }
 
 
 }

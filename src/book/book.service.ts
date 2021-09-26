@@ -11,9 +11,6 @@ export class BookService {
     ) { }
 
 
-    addAuthor(bookdId: string, authroId: string) {
-
-    }
 
     create(data: CreateBookDto, idLength: number) {
         const book = {

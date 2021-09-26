@@ -4,7 +4,7 @@ import router from "./router"
 import { UserRepository } from "./user/user-repository"
 import { ReadingListStorage } from "./readinglist/reading-list-repository"
 import { BooksRepository } from "./book/book-repository"
-import { BookService } from "../src/book/book.service"
+
 
 async function main() {
     const app = express()
@@ -16,7 +16,7 @@ async function main() {
     const readingListRepo = new ReadingListStorage()
     const booksRepo = new BooksRepository()
 
-    const booksService = new BookService(booksRepo)
+
 
 
     // Добавляет юзеру книжку
@@ -50,16 +50,7 @@ async function main() {
             return
         }
 
-        const updatedRL = {
-            id: readingList.id,
-            booksIds: [...readingList.booksIds, bookId],
-            updatedAt: new Date()
-        }
-
-        const currentRLIndex = ReadingListStorage.findIndex(rl => rl.id === readingList.id)
-
-        ReadingListStorage.splice(currentRLIndex, 1)
-        ReadingListStorage.push(updatedRL)
+        const updatedRL = readingListRepo.updateRL(userId, bookId)
 
         res.contentType("json")
         res.end(JSON.stringify(updatedRL))
@@ -95,6 +86,7 @@ async function main() {
     // обновляет юзера
     router.put("/users/:id", (req, res) => {
         const userId = Number(req.params.id)
+
         var updatedUser = userRepo.findUserById(userId)
         updatedUser = {
             id: userId,

@@ -1,12 +1,10 @@
 import { Book } from "./book";
-import { BookService } from "./book.service";
-
 
 
 export class BooksRepository {
     constructor() { }
 
-    const bookService = new BookService()
+
 
     private _books: Book[] = [
         { id: 4, name: "PIZDA", author: "Vara", createdAt: new Date() },
@@ -17,10 +15,13 @@ export class BooksRepository {
         { id: 7, name: "MOCHA 2", author: "Vitya", createdAt: new Date() },
         { id: 6, name: "SISKI 2", author: "Kirill", createdAt: new Date() },
     ]
-
+    /**
+     * Вставляет книгу в стораж
+     * @param book 
+     * @returns 
+     */
     insert(book: Book) {
-        
-        BookService.
+        return this._books.push(book)
     }
 
     /**
@@ -35,7 +36,7 @@ export class BooksRepository {
         if (!book) {
             throw new Error("book not found")
         }
-        
+
         return book
     }
 
