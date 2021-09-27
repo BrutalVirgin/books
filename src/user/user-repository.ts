@@ -18,6 +18,16 @@ export class UserRepository {
         return this._users
     }
 
+    delete(id: number) {
+        const position = this._users.findIndex(x => x.id === id)
+        if (position) {
+            this._users.splice(position, 1)
+        } else {
+            throw new Error("user not found")
+        }
+
+    }
+
     /**
      * Находит юзера по айди
      * @param id  
@@ -31,17 +41,17 @@ export class UserRepository {
         }
         return user
     }
+
     /**
      * Всунуть в стораж обновленного юзера
      * @param user 
      * @returns 
      */
-    insertCurrentUSer(user: User) {
-        const position = this._users.indexOf(this.findUserById(user.id))
-        const updatedUSer = this._users.splice(position, 1, user)
+    insert(user: User) {
+        this.delete(user.id)
 
-        return updatedUSer
+        const insertUSer = this._users.push(user)
+
+        return insertUSer
     }
-
-
 }

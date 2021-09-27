@@ -4,6 +4,7 @@ import router from "./router"
 import { UserRepository } from "./user/user-repository"
 import { ReadingListStorage } from "./readinglist/reading-list-repository"
 import { BooksRepository } from "./book/book-repository"
+import { UserService } from "./user/user.service"
 
 
 async function main() {
@@ -15,6 +16,7 @@ async function main() {
     const userRepo = new UserRepository()
     const readingListRepo = new ReadingListStorage()
     const booksRepo = new BooksRepository()
+    const userService = new UserService(userRepo)
 
 
 
@@ -87,18 +89,10 @@ async function main() {
     router.put("/users/:id", (req, res) => {
         const userId = Number(req.params.id)
 
-        var updatedUser = userRepo.findUserById(userId)
-        updatedUser = {
-            id: userId,
-            name: req.body.name,
-            email: req.body.email,
-            age: Number(req.body.age),
-            createdAt: new Date(),
-            updatedAt: new Date()
-        }
+        const update = userService.updateUser(userId, { name: req.body.name, age: Number(req.body.age), email: req.body.email })
 
         res.contentType("json")
-        res.end(JSON.stringify(updatedUser))
+        res.end(JSON.stringify(update))
     })
 
 
