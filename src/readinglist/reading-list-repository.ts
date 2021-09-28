@@ -16,7 +16,7 @@ export class ReadingListStorage {
      * @param id 
      * @returns 
      */
-    findUserById(id: number): ReadingList {
+    findById(id: number): ReadingList {
         const user = this._readingListStorage.find((user) => {
             return user.id === id
         })
@@ -42,6 +42,19 @@ export class ReadingListStorage {
         return brandNewRL
     }
 
+    insert(rl: ReadingList) {
+
+        const existingRl = this._readingListStorage.find(_rl => _rl.id === rl.id)
+
+        if (existingRl) {
+            const position = this._readingListStorage.indexOf(existingRl)
+            this._readingListStorage.splice(position, 1, rl)
+        } else {
+            this._readingListStorage = [...this._readingListStorage, rl]
+        }
+
+    }
+
     /**
      * Возвращает весь список стораж
      * @returns 
@@ -57,16 +70,17 @@ export class ReadingListStorage {
      * @returns 
      */
     updateRL(id: number, booksId: number) {
-        const user = this.findUserById(id)
+        const rl = this.findById(id)
 
         const updatedRL: ReadingList = {
-            id,
-            booksIds: [...user.booksIds, booksId],
+            ...rl,
+            booksIds: [...rl.booksIds, booksId],
             updatedAt: new Date()
         }
-        const position = this._readingListStorage.indexOf(this.findUserById(id))
-        const newRl = this._readingListStorage.splice(position, 1, updatedRL)
-        return newRl
+
+        this.insert(updatedRL)
+        
+        return updatedRL
     }
 
 }

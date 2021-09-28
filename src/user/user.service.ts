@@ -24,5 +24,3 @@ export class UserService {
 
 }
 
-// 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
-// https://BrutalVirgin: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@github.com/BrutalVirgin/books.git
