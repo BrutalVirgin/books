@@ -20,26 +20,23 @@ export class UserRepository {
 
     delete(id: number) {
         const position = this._users.findIndex(x => x.id === id)
-        if (position) {
+        if (position !== -1) {
             this._users.splice(position, 1)
         } else {
             throw new Error("user not found")
         }
-
     }
 
     /**
      * Находит юзера по айди
      * @param id  
      */
-    findUserById(id: number): User {
+    findUserById(id: number): User | null {
         const user = this._users.find((user) => {
             return user.id === id
         })
-        if (!user) {
-            throw new Error("user not found")
-        }
-        return user
+
+        return user ?? null
     }
 
     /**

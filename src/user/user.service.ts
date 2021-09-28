@@ -12,10 +12,17 @@ export class UserService {
     updateUser(id: number, data: UserChangeSet) {
 
         const user = this.userRepository.findUserById(id)
-        const updatedUser = { ...user, data }
+        if (!user) {
+            throw new Error("user not found")
+        }
+
+        const updatedUser: User = { ...user, ...data }
         this.userRepository.insert(updatedUser)
         return updatedUser
     }
 
 
 }
+
+// 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
+// https://BrutalVirgin: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@github.com/BrutalVirgin/books.git
