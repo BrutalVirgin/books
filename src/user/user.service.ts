@@ -1,6 +1,7 @@
 import { UserRepository } from "./user-repository";
 import { User } from "./user"
 
+type UserChangeSet = Pick<User, "name" | "age" | "email">
 
 export class UserService {
     constructor(
@@ -8,20 +9,17 @@ export class UserService {
     ) { }
 
 
-    updateUser(user: User) {
-        const updatedUser = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            age: Number(user.age),
-            createdAt: new Date(),
-            updatedAt: new Date()
+    updateUser(id: number, data: UserChangeSet) {
+
+        const user = this.userRepository.findUserById(id)
+        if (!user) {
+            throw new Error("user not found")
         }
 
-        const update = this.userRepository.insertCurrentUSer(updatedUser)
-        return update
+        const updatedUser: User = { ...user, ...data }
+        this.userRepository.insert(updatedUser)
+        return updatedUser
     }
 
 
 }
-///asdsd

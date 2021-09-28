@@ -18,30 +18,37 @@ export class UserRepository {
         return this._users
     }
 
+    delete(id: number) {
+        const position = this._users.findIndex(x => x.id === id)
+        if (position !== -1) {
+            this._users.splice(position, 1)
+        } else {
+            throw new Error("user not found")
+        }
+    }
+
     /**
      * Находит юзера по айди
      * @param id  
      */
-    findUserById(id: number): User {
+    findUserById(id: number): User | null {
         const user = this._users.find((user) => {
             return user.id === id
         })
-        if (!user) {
-            throw new Error("user not found")
-        }
-        return user
+
+        return user ?? null
     }
+
     /**
      * Всунуть в стораж обновленного юзера
      * @param user 
      * @returns 
      */
-    insertCurrentUSer(user: User) {
-        const position = this._users.indexOf(this.findUserById(user.id))
-        const updatedUSer = this._users.splice(position, 1, user)
+    insert(user: User) {
+        this.delete(user.id)
 
-        return updatedUSer
+        const insertUSer = this._users.push(user)
+
+        return insertUSer
     }
-
-
 }
