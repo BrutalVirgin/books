@@ -1,4 +1,3 @@
-//import { Book } from "../book/book"
 import { ReadingList } from "./reading-list"
 
 export class ReadingListStorage {
@@ -42,6 +41,10 @@ export class ReadingListStorage {
         return brandNewRL
     }
 
+    /**
+     * Добавляет книгу в стораж
+     * @param rl 
+     */
     insert(rl: ReadingList) {
 
         const existingRl = this._readingListStorage.find(_rl => _rl.id === rl.id)
@@ -61,26 +64,6 @@ export class ReadingListStorage {
      */
     findAll() {
         return this._readingListStorage
-    }
-
-    /**
-     * Обновляет ридинг лист
-     * @param id 
-     * @param booksId 
-     * @returns 
-     */
-    updateRL(id: number, booksId: number) {
-        const rl = this.findById(id)
-
-        const updatedRL: ReadingList = {
-            ...rl,
-            booksIds: [...rl.booksIds, booksId],
-            updatedAt: new Date()
-        }
-
-        this.insert(updatedRL)
-        
-        return updatedRL
     }
 
 }

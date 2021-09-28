@@ -232,7 +232,7 @@ router.get("/user/:id/readinglist", (req, res) => {
 	res.end(JSON.stringify(userBooksStorage))
 })
 
-// Добавляет юзеру книжку
+// Добавляет юзеру книжку +++
 // artem: :bookId должен передаваться в теле запроса
 router.post("/user/:id/readinglist", (req, res) => {
 	const bookId = Number(req.body.bookId)
@@ -311,7 +311,7 @@ router.put("/users/:id", (req, res) => {
 	res.end(JSON.stringify(users[position]))
 })
 
-// удаляем юзера
+// удаляем юзера +++
 // artem: /users/:id 
 router.delete("/users/:id", (req, res) => {
 	const getUser = users.find((user) => {

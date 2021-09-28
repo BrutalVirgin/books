@@ -22,9 +22,14 @@ export class UserRepository {
         const position = this._users.findIndex(x => x.id === id)
         if (position !== -1) {
             this._users.splice(position, 1)
-        } else {
+            if (this._users.length === 0) {
+                throw new Error("repo is empty")
+            }
+        }
+        else {
             throw new Error("user not found")
         }
+
     }
 
     /**
