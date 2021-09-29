@@ -1,25 +1,23 @@
 import { UserRepository } from "./user-repository";
 import { User } from "./user"
+import { ReadingList } from "../readinglist/interfaces";
 
 type UserChangeSet = Pick<User, "name" | "age" | "email">
 type NewUserSet = Pick<User, "name" | "age" | "email" | "id">
 
 export class UserService {
     constructor(
-        private readonly userRepository: UserRepository
+        private readonly userRepository: UserRepository,
     ) { }
 
+    findOneById(id: number) {
+        const user = this.userRepository.findById(id)
 
-    updateUser(id: number, data: UserChangeSet) {
+        return user
+    }
 
-        const user = this.userRepository.findUserById(id)
-        if (!user) {
-            throw new Error("user not found")
-        }
-
-        const updatedUser: User = { ...user, ...data }
-        this.userRepository.insert(updatedUser)
-        return updatedUser
+    findAll() {
+        return this.userRepository.findAll()
     }
 
     createUser(user: NewUserSet) {
@@ -34,5 +32,21 @@ export class UserService {
         this.userRepository.insert(newUSer)
     }
 
+    updateUser(id: number, data: UserChangeSet) {
+
+        const user = this.userRepository.findById(id)
+        if (!user) {
+            throw new Error("user not found")
+        }
+
+        const updatedUser: User = { ...user, ...data }
+        this.userRepository.insert(updatedUser)
+        return updatedUser
+    }
+
+    getReadingList(id: number): ReadingList[] {
+        id
+        throw new Error("not implemented")
+    }
 
 }

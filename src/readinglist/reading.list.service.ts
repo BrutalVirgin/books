@@ -1,9 +1,10 @@
-import { ReadingList } from "./reading-list"
-import { ReadingListStorage } from "./reading-list-repository"
+import { genId } from "../utils"
+import { ReadingList } from "./interfaces"
+import { ReadingListRepository } from "./reading-list-repository"
 
 export class ReadingListService {
     constructor(
-        private readonly readingListRepository: ReadingListStorage
+        private readonly readingListRepository: ReadingListRepository
     ) { }
 
     /**
@@ -12,7 +13,7 @@ export class ReadingListService {
         * @param booksId 
         * @returns 
         */
-    updateRL(id: number, booksId: number) {
+    update(id: number, booksId: number) {
         const rl = this.readingListRepository.findById(id)
 
         const updatedRL: ReadingList = {
@@ -24,6 +25,16 @@ export class ReadingListService {
         this.readingListRepository.insert(updatedRL)
 
         return updatedRL
+    }
+
+    create(rl: number) {
+        const newRl = {
+            id: genId(),
+            booksIds: [rl],
+            updatedAt: new Date()
+        }
+
+        this.readingListRepository.insert(newRl)
     }
 
 }

@@ -1,17 +1,16 @@
-import { ReadingList } from "./reading-list"
+import { ReadingList } from "./interfaces"
 
-export class ReadingListStorage {
+export class ReadingListRepository {
     constructor() { }
-
+    
     private _readingListStorage: ReadingList[] = [
-        { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date() },
+        { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 },
         { id: 2, booksIds: [4], updatedAt: new Date() },
         { id: 3, booksIds: [2, 5], updatedAt: new Date() },
     ]
-
-
+    
     /**
-     * Находит юзера по айди
+     * Находит юзера по айди ???
      * @param id 
      * @returns 
      */
@@ -24,8 +23,13 @@ export class ReadingListStorage {
         }
         return user
     }
+    
+    findByUserId(userId: number): ReadingList | null {
+        userId
+        throw new Error("Method not implemented.")
+    }
 
-    /**
+    /** ///////// SERVISNAYAYAYAYSY JEJEJJEJEJEJ
      * Создает нового юзера с книжкой и добавляет в стораж
      * @param userId 
      * @param booksIds 

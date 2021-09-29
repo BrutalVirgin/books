@@ -2,83 +2,71 @@ import express from "express"
 
 import router from "./router"
 import { UserRepository } from "./user/user-repository"
-import { ReadingListStorage } from "./readinglist/reading-list-repository"
-import { BooksRepository } from "./book/book-repository"
+import { ReadingListRepository } from "./readinglist/reading-list-repository"
+// import { BooksRepository } from "./book/book-repository"
 import { UserService } from "./user/user.service"
 import { ReadingListService } from "./readinglist/reading.list.service"
+import { genId } from "./utils"
+import { ReadingList } from "./readinglist/interfaces"
 
 
 async function main() {
     const app = express()
 
-
     app.use(express.json())
 
     const userRepo = new UserRepository()
-    const readingListRepo = new ReadingListStorage()
-    const booksRepo = new BooksRepository()
+    const readingListRepo = new ReadingListRepository()
+    // const booksRepo = new BooksRepository()
     const userService = new UserService(userRepo)
     const readingListService = new ReadingListService(readingListRepo)
 
 
     // выдает всех юзееров
     router.get("/users", (_req, res) => {
-        const getUsers = userRepo.showAllUsers()
+        const getUsers = userService.findAll()
 
         res.contentType("json")
         res.end(JSON.stringify(getUsers))
     })
 
     //  Возвращает читательный лист юзера
-    router.get("/user/:id/readinglist", (req, res) => {
-        const findUser = readingListRepo.findById(Number(req.params.id))
-
-        const repos = booksRepo.findMany(findUser.booksIds)
+    router.get("/users/:id/readinglist", (req, res) => {
+        const rl = readingListRepo.findByUserId(Number(req.params.id))
 
         res.contentType("json")
-        res.end(JSON.stringify(repos))
+        res.end(JSON.stringify(rl))
     })
 
     // Добавляет юзеру книжку
+    // { books: [bookId] }
     // artem: :bookId должен передаваться в теле запроса
-    router.post("/user/:id/readinglist", (req, res) => {
-
-
-        const bookId = Number(req.body.bookId)
+    router.post("/users/:id/readinglist", (req, res) => {
         const userId = Number(req.params.id)
+        const bookIds = Array(req.body["books"]).map(Number)
 
-        const user = userRepo.findUserById(userId)
+        const user = userRepo.findById(userId)
         if (!user) {
             res.end(`user ${userId} not found`)
             return
         }
-        const bookToAdd = booksRepo.findBook(bookId)
-        if (!bookToAdd) {
-            res.end(`book ${bookId} not found`)
-            return
+
+        const rl: ReadingList = {
+            userId,
+            id: genId(),
+            booksIds: bookIds,
+            updatedAt: new Date(),
         }
 
-        const readingList = readingListRepo.findById(userId)
-        if (!readingList) {
-            const brandNewRL = readingListRepo.createNewRl(userId, bookToAdd.id)
-            res.end(JSON.stringify(brandNewRL))
-            return
-        }
-
-        if (readingList.booksIds.includes(bookId)) {
-            res.end(`user already has book ${bookId}`)
-            return
-        }
-
-        const updatedRL = readingListService.updateRL(userId, bookId)
+        readingListRepo.insert(rl)
 
         res.contentType("json")
-        res.end(JSON.stringify(updatedRL))
+        res.end(JSON.stringify(rl))
     })
 
     // выводит одного юзера
     router.get("/users/:id", (req, res) => {
-        const user = userRepo.findUserById(Number(req.params.id))
+        const user = userRepo.findById(Number(req.params.id))
 
         res.contentType("json")
         res.end(JSON.stringify(user))
@@ -97,12 +85,12 @@ async function main() {
     // удаляем юзера
     // artem: /users/:id 
     router.delete("/users/:id", (req, res) => {
-        const getUser = userRepo.findUserById(Number(req.params.id))
+        userRepo.delete(Number(req.params.id))
 
-        userRepo.delete(getUser?.id!)
+        const users = userRepo.findAll()
 
         res.contentType("json")
-        res.end(JSON.stringify(userRepo))
+        res.end(JSON.stringify(users))
     })
 
 
@@ -111,21 +99,47 @@ async function main() {
     router.post("/users", (req, res) => {
         const userId = Number(req.body.userId)
 
-        const user = userRepo.findUserById(userId)
+        const user = userRepo.findById(userId)
         if (user) {
             return res.end(`user id ${userId} is already taken`)
         }
 
-        const newUser = userService.createUser({ id: 5, name: req.body.name, email: req.body.email, age: Number(req.body.age) })
-
+        const newUser = userService.createUser({ id: genId(), name: req.body.name, email: req.body.email, age: Number(req.body.age) })
 
         res.contentType("json")
         res.end(JSON.stringify(newUser))
     })
 
+    //___________________________________________________________________
+
+    // создавать чительный лист
+    //artem: coздаем readinglist получая json с полями 
+    router.post("/readinglist/:id", (req, res) => {
+        const userId = Number(req.params.id)
+        const user = userRepo.findById(userId)
+        if (!user) {
+            return res.end(`user ${userId} not found`)
+        }
+        const userInRL = readingListRepo.findById(userId)
+
+        if (userInRL) {
+            return res.end(`user ${userId} already have a reading list`)
+        }
+
+        if (!userInRL) {
+            const newList = Number(req.body.booksIds)
+            readingListService.create(newList)
+        }
+
+        res.contentType("json")
+        res.end(JSON.stringify(ReadingListRepository))
+    })
+
+
     app.use(router)
 
     app.listen(3000, () => console.log("runnin"))
+
 }
 
 

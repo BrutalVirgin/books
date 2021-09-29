@@ -1,5 +1,6 @@
-import { Book } from "./book";
+import { Book } from "./interfaces";
 import { BooksRepository } from "./book-repository";
+import { genId } from "../utils";
 
 type BookUpdateChangeSet = Pick<Book, "name" | "author">
 type CreateBookDto = Pick<Book, "name" | "author">
@@ -10,11 +11,9 @@ export class BookService {
         private readonly booksRepository: BooksRepository,
     ) { }
 
-
-
-    create(data: CreateBookDto, idLength: number) {
+    create(data: CreateBookDto) {
         const book = {
-            id: idLength,
+            id: genId(),
             name: data.name,
             author: data.author,
             createdAt: new Date()
@@ -28,7 +27,7 @@ export class BookService {
 
 
     update(bookId: string, fields: Partial<BookUpdateChangeSet>) {
-        const book = this.booksRepository.findBookById(Number(bookId))
+        const book = this.booksRepository.findById(Number(bookId))
         if (!book) {
             throw new Error("user not found")
         }
@@ -39,6 +38,5 @@ export class BookService {
 
         return updated
     }
-
 
 }

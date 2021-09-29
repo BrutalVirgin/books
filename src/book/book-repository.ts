@@ -1,10 +1,8 @@
-import { Book } from "./book";
+import { Book } from "./interfaces";
 
 
 export class BooksRepository {
     constructor() { }
-
-
 
     private _books: Book[] = [
         { id: 4, name: "PIZDA", author: "Vara", createdAt: new Date() },
@@ -29,7 +27,7 @@ export class BooksRepository {
      * @param id 
      * @returns 
      */
-    findBookById(id: number): Book {
+    findById(id: number): Book {
         const book = this._books.find((book) => {
             return book.id === id
         })
@@ -50,35 +48,10 @@ export class BooksRepository {
     }
 
     /**
-     * Находит книгу для добавления
-     * @param bookId 
-     * @returns 
-     */
-    findBook(bookId: number) {
-        const addingBook = this._books.find(b => b.id === bookId)
-        return addingBook
-    }
-
-    /**
-     * Добавляет новую книгу в стораж
-     * @param name 
-     * @param author 
-     * @returns 
-     */
-    addBook(name: string, author: string) {
-        const book = {
-            id: this._books.length + 1,
-            name,
-            author,
-            createdAt: new Date()
-        }
-        return this._books.push(book)
-    }
-    /**
      * Достает все книги
      * @returns 
      */
-    findAllBooks() {
+    findAll() {
         return this._books
     }
 

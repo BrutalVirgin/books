@@ -331,7 +331,7 @@ router.delete("/users/:id", (req, res) => {
 	res.end(JSON.stringify(users))
 })
 
-// создаем юзера 
+// создаем юзера +++
 //artem: coздаем юзера получая json с полями 
 router.post("/users", (req, res) => {
 	const userId = Number(req.body.userId)

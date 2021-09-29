@@ -14,7 +14,7 @@ export class UserRepository {
 
     ]
 
-    showAllUsers() {
+    findAll() {
         return this._users
     }
 
@@ -36,7 +36,7 @@ export class UserRepository {
      * Находит юзера по айди
      * @param id  
      */
-    findUserById(id: number): User | null {
+    findById(id: number): User | null {
         const user = this._users.find((user) => {
             return user.id === id
         })
