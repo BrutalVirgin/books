@@ -1,14 +1,15 @@
+//import { User } from "../user/user"
 import { ReadingList } from "./interfaces"
 
 export class ReadingListRepository {
     constructor() { }
-    
+
     private _readingListStorage: ReadingList[] = [
         { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 },
-        { id: 2, booksIds: [4], updatedAt: new Date() },
-        { id: 3, booksIds: [2, 5], updatedAt: new Date() },
+        { id: 2, booksIds: [4], updatedAt: new Date(), userId: 2 },
+        { id: 3, booksIds: [2, 5], updatedAt: new Date(), userId: 3 },
     ]
-    
+
     /**
      * Находит юзера по айди ???
      * @param id 
@@ -23,26 +24,18 @@ export class ReadingListRepository {
         }
         return user
     }
-    
-    findByUserId(userId: number): ReadingList | null {
-        userId
-        throw new Error("Method not implemented.")
-    }
 
-    /** ///////// SERVISNAYAYAYAYSY JEJEJJEJEJEJ
-     * Создает нового юзера с книжкой и добавляет в стораж
+    /**
+     * Находит юзера по user.id
      * @param userId 
-     * @param booksIds 
      * @returns 
      */
-    createNewRl(userId: number, booksIds: number): ReadingList {
-        const brandNewRL = {
-            id: userId,
-            booksIds: [booksIds],
-            updatedAt: new Date()
+    findByUserId(userId: number): ReadingList | null {
+        const user = this._readingListStorage.find(user => user.id === userId)
+        if (!user) {
+            throw new Error("user not found")
         }
-        this._readingListStorage.push(brandNewRL)
-        return brandNewRL
+        return user
     }
 
     /**
@@ -60,6 +53,13 @@ export class ReadingListRepository {
             this._readingListStorage = [...this._readingListStorage, rl]
         }
 
+    }
+
+    insertNewUSer(user: ReadingList) {
+        const newUser = this._readingListStorage.find(x => x.id === user.id)
+        if (!newUser) {
+            this._readingListStorage.push(user)
+        }
     }
 
     /**

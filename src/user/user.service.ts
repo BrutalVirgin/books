@@ -1,6 +1,7 @@
 import { UserRepository } from "./user-repository";
+import { ReadingListRepository } from "../readinglist/reading-list-repository"
 import { User } from "./user"
-import { ReadingList } from "../readinglist/interfaces";
+
 
 type UserChangeSet = Pick<User, "name" | "age" | "email">
 type NewUserSet = Pick<User, "name" | "age" | "email" | "id">
@@ -8,6 +9,7 @@ type NewUserSet = Pick<User, "name" | "age" | "email" | "id">
 export class UserService {
     constructor(
         private readonly userRepository: UserRepository,
+        private readonly readingListRepository: ReadingListRepository
     ) { }
 
     findOneById(id: number) {
@@ -44,9 +46,17 @@ export class UserService {
         return updatedUser
     }
 
-    getReadingList(id: number): ReadingList[] {
-        id
-        throw new Error("not implemented")
+    /**
+     * Вовзращает читательный лист юзера ///////////////////////////////////////////
+     * @param id 
+     */
+    getReadingList(id: number) {
+        const user = this.readingListRepository.findById(id)
+        const books = user.booksIds.reduce<number[]>((acc, val) => {
+            return [...acc, val]
+        }, [])
+
+        return books
     }
 
 }
