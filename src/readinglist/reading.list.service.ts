@@ -13,8 +13,13 @@ export class ReadingListService {
         * @param booksId 
         * @returns 
         */
-    update(id: number, booksId: number) {
-        const rl = this.readingListRepository.findById(id)
+    update(userId: number, booksId: number) {
+        const rl = this.readingListRepository.findById(userId)
+
+        const book = rl.booksIds.includes(booksId)
+        if (book) {
+            throw new Error("user alreadu have this book")
+        }
 
         const updatedRL: ReadingList = {
             ...rl,
@@ -27,10 +32,10 @@ export class ReadingListService {
         return updatedRL
     }
 
-    create(rl: number) {
+    create(userId: number, rl: number) {
         const newRl = {
             id: genId(),
-            userId: genId(),
+            userId: userId,
             booksIds: [rl],
             updatedAt: new Date()
         }

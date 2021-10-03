@@ -19,10 +19,8 @@ export class ReadingListRepository {
         const user = this._readingListStorage.find((user) => {
             return user.id === id
         })
-        if (!user) {
-            throw new Error("user not found")
-        }
-        return user
+
+        return user!
     }
 
     /**
@@ -36,6 +34,16 @@ export class ReadingListRepository {
             throw new Error("user not found")
         }
         return user
+    }
+
+    delete(userId: number) {
+        const position = this._readingListStorage.findIndex(x => x.id === userId)
+        if (position !== -1) {
+            this._readingListStorage.splice(position, 1)
+            if (this._readingListStorage.length === 0) {
+                throw new Error("repo is empty")
+            }
+        }
     }
 
     /**

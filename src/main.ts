@@ -8,6 +8,7 @@ import { UserService } from "./user/user.service"
 import { ReadingListService } from "./readinglist/reading.list.service"
 import { genId } from "./utils"
 import { ReadingList } from "./readinglist/interfaces"
+import { BooksRepository } from "./book/book-repository"
 
 
 async function main() {
@@ -17,9 +18,9 @@ async function main() {
 
     const userRepo = new UserRepository()
     const readingListRepo = new ReadingListRepository()
-    // const booksRepo = new BooksRepository()
-    const userService = new UserService(userRepo)
+    const userService = new UserService(userRepo, readingListRepo)
     const readingListService = new ReadingListService(readingListRepo)
+    const booksRepos = new BooksRepository()
 
 
     // выдает всех юзееров
@@ -128,11 +129,64 @@ async function main() {
 
         if (!userInRL) {
             const newList = Number(req.body.booksIds)
-            readingListService.create(newList)
+            readingListService.create(userId, newList)
+        }
+
+        const showAll = readingListRepo.findAll()
+
+        res.contentType("json")
+        res.end(JSON.stringify(showAll))
+    })
+
+    // удалять читательный лист
+    router.delete("/readinglist/:id", (req, res) => {
+        const userId = Number(req.params.id)
+        const user = userRepo.findById(userId)
+
+        if (!user) {
+            return res.end(`user ${userId} not found`)
+        }
+        const findReadList = readingListRepo.findById(userId)
+
+        if (!findReadList) {
+            return res.end(`user ${req.params.id} havent reading list`)
+        }
+
+        readingListRepo.delete(user.id)
+
+        res.contentType("json")
+        res.end(JSON.stringify(readingListRepo.findAll()))
+    })
+
+    // обновляем читательный лист
+    router.put("/readinglist/:id", (req, res) => {
+        const user = readingListRepo.findById(Number(req.params.id))
+        if (!user) {
+            return res.end(`user ${req.params.id} not found`)
+        }
+
+        const book = booksRepos.findById(Number(req.body.booksId))
+        if (!book) {
+            return res.end(`book ${Number(req.body.booksId)} not found`)
+        }
+
+        if (user.booksIds.length >= 5) {
+            return res.end(`You have more than 5 books. Pashol nahui`)
+        }
+
+        if (user && user.booksIds.length < 5) {
+            readingListService.update(user.id, Number(req.body.booksId))
         }
 
         res.contentType("json")
-        res.end(JSON.stringify(ReadingListRepository))
+        res.end(JSON.stringify(readingListRepo.findById(user.id)))
+    })
+
+    // получать читательный лист 
+    router.get("/readinglist", (_req, res) => {
+
+        res.contentType("json")
+        res.end(JSON.stringify(readingListRepo.findAll()))
     })
 
 

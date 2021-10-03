@@ -122,7 +122,7 @@ router.get("/authors/:id/books", (req, res) => {
 })
 
 // _________________________________________________________________________________________________________
-// создавать чительный лист
+// создавать чительный лист +++
 //artem: coздаем readinglist получая json с полями 
 router.post("/readinglist/:id", (req, res) => {
 	const userId = Number(req.body.userId)
@@ -149,7 +149,7 @@ router.post("/readinglist/:id", (req, res) => {
 	res.end(JSON.stringify(ReadingListStorage))
 })
 
-// удалять читательный лист
+// удалять читательный лист +++
 router.delete("/readinglist/:id", (req, res) => {
 	const findUser = users.find((user) => {
 		return user.id === Number(req.params.id)
@@ -172,7 +172,7 @@ router.delete("/readinglist/:id", (req, res) => {
 	res.end(JSON.stringify(ReadingListStorage))
 })
 
-// обновляем читательный лист
+// обновляем читательный лист +++
 router.put("/readinglist/:id", (req, res) => {
 	const findUser = ReadingListStorage.find((user) => {
 		return user.id === Number(req.params.id)
@@ -196,7 +196,7 @@ router.put("/readinglist/:id", (req, res) => {
 	res.end(JSON.stringify(ReadingListStorage))
 })
 
-// получать читательный лист 
+// получать читательный лист +++
 router.get("/readinglist", (req, res) => {
 
 	res.contentType("json")
