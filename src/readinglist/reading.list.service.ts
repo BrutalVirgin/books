@@ -32,11 +32,11 @@ export class ReadingListService {
         return updatedRL
     }
 
-    create(userId: number, rl: number): void {
+    create(userId: number, rl: number[]): void {
         const newRl = {
             id: genId(),
             userId: userId,
-            booksIds: [rl],
+            booksIds: rl,
             updatedAt: new Date()
         }
 

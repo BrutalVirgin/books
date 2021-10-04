@@ -6,21 +6,20 @@ export class ReadingListRepository {
 
     private _readingListStorage: ReadingList[] = [
         { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 },
+        { id: 1, booksIds: [5, 1], updatedAt: new Date(), userId: 1 },
         { id: 2, booksIds: [4], updatedAt: new Date(), userId: 2 },
         { id: 3, booksIds: [2, 5], updatedAt: new Date(), userId: 3 },
     ]
 
     /**
-     * Находит юзера по айди ???
+     * Находит ридинг лист по айди ???
      * @param id 
      * @returns 
      */
     findById(id: number): ReadingList {
-        const user = this._readingListStorage.find((user) => {
-            return user.id === id
-        })
+        const rl = this._readingListStorage.find(rl => rl.id === id)
 
-        return user!
+        return rl!
     }
 
     /**
@@ -29,7 +28,6 @@ export class ReadingListRepository {
      * @returns 
      */
     findByUserId(userId: number): ReadingList[] {
-
         return this._readingListStorage.filter(user => user.id === userId)
     }
 

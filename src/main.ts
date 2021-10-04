@@ -2,16 +2,16 @@ import express from "express"
 
 import router from "./router"
 import { UserRepository } from "./user/user-repository"
-import { ReadingListRepository } from "./readinglist/reading-list-repository"
-// import { BooksRepository } from "./book/book-repository"
 import { UserService } from "./user/user.service"
+import { ReadingListRepository } from "./readinglist/reading-list-repository"
 import { ReadingListService } from "./readinglist/reading.list.service"
+//import { ReadingList } from "./readinglist/interfaces"
 import { genId } from "./utils"
-import { ReadingList } from "./readinglist/interfaces"
 import { BooksRepository } from "./book/book-repository"
+import { BookService } from "./book/book.service"
 import { AuthorRepository } from "./author/author-repository"
 import { AuthorService } from "./author/author.service"
-import { BookService } from "./book/book.service"
+
 
 
 async function main() {
@@ -29,7 +29,7 @@ async function main() {
     const authorService = new AuthorService(authorRepos)
 
 
-    // выдает всех юзееров
+    // выдает всех юзееров +++
     router.get("/users", (_req, res) => {
         const getUsers = userService.findAll()
 
@@ -37,35 +37,40 @@ async function main() {
         res.end(JSON.stringify(getUsers))
     })
 
-    //  Возвращает читательный лист юзера
-    router.get("/users/:id/readinglist", (req, res) => {
-        const rl = readingListRepo.findByUserId(Number(req.params.id))
+    //  Возвращает читательный лист юзера +++
+    router.get("/users/:userid/readinglist", (req, res) => {
+        const rl = readingListRepo.findByUserId(Number(req.params.userid))
+        if (!rl) {
+            throw new Error("reading list not found")
+        }
+        const bookList = []
+
+        for (var i = 0; i < rl.length; i++) {
+            const books = rl[i]?.booksIds
+            bookList.push(books)
+        }
 
         res.contentType("json")
-        res.end(JSON.stringify(rl))
+        res.end(JSON.stringify(bookList))
     })
 
     // Добавляет юзеру книжку
-    // { books: [bookId] }
-    // artem: :bookId должен передаваться в теле запроса
     router.post("/users/:id/readinglist", (req, res) => {
         const userId = Number(req.params.id)
-        const bookIds = Array(req.body["books"]).map(Number)
+        const bookIds = Array(req.body["booksIds"]).map(Number)
 
         const user = userRepo.findById(userId)
         if (!user) {
-            res.end(`user ${userId} not found`)
-            return
+            return res.end(`user ${userId} not found`)
         }
 
-        const rl: ReadingList = {
-            userId,
-            id: genId(),
-            booksIds: bookIds,
-            updatedAt: new Date(),
-        }
-
-        readingListRepo.insert(rl)
+        // const rl: ReadingList = {
+        //     userId,
+        //     id: genId(),
+        //     booksIds: bookIds,
+        //     updatedAt: new Date(),
+        // }
+        const rl = readingListService.create(userId, bookIds)
 
         res.contentType("json")
         res.end(JSON.stringify(rl))
@@ -134,7 +139,7 @@ async function main() {
         }
 
         if (!userInRL) {
-            const newList = Number(req.body.booksIds)
+            const newList = Array(req.body["books"]).map(Number)
             readingListService.create(userId, newList)
         }
 
@@ -308,6 +313,18 @@ async function main() {
 
         res.contentType("json")
         res.end(JSON.stringify(updatedBook))
+    })
+
+    // выдает инфу по книге (весь объект)
+    router.get("/books/:id", (req, res) => {
+        const book = booksRepos.findById(Number(req.params.id))
+        if (!book) {
+            res.end("book not found")
+            return
+        }
+
+        res.contentType("json")
+        res.end(JSON.stringify(book))
     })
 
     app.use(router)

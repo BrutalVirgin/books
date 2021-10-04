@@ -381,7 +381,7 @@ router.get("/books", (req, res) => {
 	res.end(JSON.stringify(booksStorage))
 })
 
-// обновлять книгу
+// обновлять книгу +++
 router.put("/books/:id", (req, res) => {
 	const findBook = booksStorage.find((book) => {
 		return book.id === Number(req.params.id)
@@ -399,13 +399,11 @@ router.put("/books/:id", (req, res) => {
 
 // выдает инфу по книге (весь объект)
 router.get("/books/:id", (req, res) => {
-	console.log("GET BOOK", req.params.id)
-
 	const book = booksStorage.find((book) => {
 		return book.id === Number(req.params.id)
 	})
 	if (!book) {
-		res.end("nahiu")
+		res.end("book not found")
 		return
 	}
 
