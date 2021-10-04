@@ -13,7 +13,7 @@ export class ReadingListService {
         * @param booksId 
         * @returns 
         */
-    update(userId: number, booksId: number) {
+    update(userId: number, booksId: number): ReadingList {
         const rl = this.readingListRepository.findById(userId)
 
         const book = rl.booksIds.includes(booksId)
@@ -32,7 +32,7 @@ export class ReadingListService {
         return updatedRL
     }
 
-    create(userId: number, rl: number) {
+    create(userId: number, rl: number): void {
         const newRl = {
             id: genId(),
             userId: userId,
@@ -43,7 +43,7 @@ export class ReadingListService {
         this.readingListRepository.insert(newRl)
     }
 
-    /** ///////// SERVISNAYAYAYAYSY JEJEJJEJEJEJ
+    /** 
     * Создает нового юзера с книжкой и добавляет в стораж
     * @param userId 
     * @param booksIds 

@@ -11,7 +11,7 @@ export class BookService {
         private readonly booksRepository: BooksRepository,
     ) { }
 
-    create(data: CreateBookDto) {
+    create(data: CreateBookDto): Book {
         const book = {
             id: genId(),
             name: data.name,
@@ -26,14 +26,15 @@ export class BookService {
 
 
 
-    update(bookId: string, fields: Partial<BookUpdateChangeSet>) {
-        const book = this.booksRepository.findById(Number(bookId))
+    update(bookId: number, fields: Partial<BookUpdateChangeSet>): Book {
+        const book = this.booksRepository.findById(bookId)
         if (!book) {
-            throw new Error("user not found")
+            throw new Error("book not found")
         }
 
         const updated = { ...book, ...fields }
 
+        this.booksRepository.delete(book.id)
         this.booksRepository.insert(updated)
 
         return updated

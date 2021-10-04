@@ -1,6 +1,7 @@
 import { UserRepository } from "./user-repository";
 import { ReadingListRepository } from "../readinglist/reading-list-repository"
 import { User } from "./user"
+import { ReadingList } from "../readinglist/interfaces";
 
 
 type UserChangeSet = Pick<User, "name" | "age" | "email">
@@ -12,17 +13,17 @@ export class UserService {
         private readonly readingListRepository: ReadingListRepository
     ) { }
 
-    findOneById(id: number) {
+    findOneById(id: number): User | null {
         const user = this.userRepository.findById(id)
 
         return user
     }
 
-    findAll() {
+    findAll(): User[] {
         return this.userRepository.findAll()
     }
 
-    createUser(user: NewUserSet) {
+    createUser(user: NewUserSet): void {
         const newUSer = {
             id: user.id,
             name: user.name,
@@ -34,7 +35,7 @@ export class UserService {
         this.userRepository.insert(newUSer)
     }
 
-    updateUser(id: number, data: UserChangeSet) {
+    updateUser(id: number, data: UserChangeSet): User {
 
         const user = this.userRepository.findById(id)
         if (!user) {
@@ -48,15 +49,11 @@ export class UserService {
 
     /**
      * Вовзращает читательный лист юзера ///////////////////////////////////////////
-     * @param id 
+     * @param userId 
      */
-    getReadingList(id: number) {
-        const user = this.readingListRepository.findById(id)
-        const books = user.booksIds.reduce<number[]>((acc, val) => {
-            return [...acc, val]
-        }, [])
+    getReadingList(userId: number): ReadingList[] {
 
-        return books
+        return this.readingListRepository.findByUserId(userId)
     }
 
 }

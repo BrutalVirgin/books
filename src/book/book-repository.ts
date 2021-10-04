@@ -18,8 +18,9 @@ export class BooksRepository {
      * @param book 
      * @returns 
      */
-    insert(book: Book) {
-        return this._books.push(book)
+    insert(book: Book): Book {
+        this._books.push(book)
+        return book
     }
 
     /**
@@ -37,21 +38,36 @@ export class BooksRepository {
 
         return book
     }
+    findBooksByAuthor(name: string): Book[] {
+        const authorBooks = this._books.filter(books => books.author === name)
+
+        return authorBooks
+    }
 
     /**
      * Находит книги по условию
      * @param booksIds 
      * @returns 
      */
-    findMany(booksIds: number[]) {
+    findMany(booksIds: number[]): Book[] {
         return this._books.filter(b => booksIds.includes(b.id))
+    }
+
+    delete(id: number): void {
+        const position = this._books.findIndex(book => book.id === id)
+        if (position !== -1) {
+            this._books.splice(position, 1)
+            if (this._books.length === 0) {
+                throw new Error("repo is empty")
+            }
+        }
     }
 
     /**
      * Достает все книги
      * @returns 
      */
-    findAll() {
+    findAll(): Book[] {
         return this._books
     }
 

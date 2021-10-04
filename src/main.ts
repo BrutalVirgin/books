@@ -9,6 +9,9 @@ import { ReadingListService } from "./readinglist/reading.list.service"
 import { genId } from "./utils"
 import { ReadingList } from "./readinglist/interfaces"
 import { BooksRepository } from "./book/book-repository"
+import { AuthorRepository } from "./author/author-repository"
+import { AuthorService } from "./author/author.service"
+import { BookService } from "./book/book.service"
 
 
 async function main() {
@@ -21,6 +24,9 @@ async function main() {
     const userService = new UserService(userRepo, readingListRepo)
     const readingListService = new ReadingListService(readingListRepo)
     const booksRepos = new BooksRepository()
+    const bookService = new BookService(booksRepos)
+    const authorRepos = new AuthorRepository()
+    const authorService = new AuthorService(authorRepos)
 
 
     // выдает всех юзееров
@@ -189,6 +195,120 @@ async function main() {
         res.end(JSON.stringify(readingListRepo.findAll()))
     })
 
+
+    //___________________________________________________________________
+
+    // создать автора
+    router.post("/authors", (req, res) => {
+        const newAuthor = req.body.name
+        authorService.create(newAuthor)
+
+        res.contentType("json")
+        res.end(JSON.stringify(authorRepos.showAll()))
+    })
+
+    // удалить автора
+    router.delete("/authors/:id", (req, res) => {
+        const author = authorRepos.findById(Number(req.params.id))
+        if (!author) {
+            return res.end(`author ${Number(req.params.id)} not found`)
+        }
+
+        authorRepos.delete(author.id)
+
+        res.contentType("json")
+        res.end(JSON.stringify(authorRepos.showAll()))
+    })
+
+    // обновить автора
+    router.put("/authors/:id", (req, res) => {
+
+        const author = authorRepos.findById(Number(req.params.id))
+        if (!author) {
+            return res.end(`author with id ${Number(req.params.id)} not found`)
+        }
+        const updatedAuthor = authorService.update(author, req.body.name)
+
+        res.contentType("json")
+        res.end(JSON.stringify(updatedAuthor))
+    })
+
+    // получить автора
+    router.get("/authors/:id", (req, res) => {
+        const author = authorRepos.findById(Number(req.params.id))
+        if (!author) {
+            return res.end(`author with id ${req.params.id} not found`)
+        }
+
+        res.contentType("json")
+        res.end(JSON.stringify(author))
+    })
+
+    // получить всех авторов
+    router.get("/authors", (_req, res) => {
+
+        res.contentType("json")
+        res.end(JSON.stringify(authorRepos.showAll()))
+    })
+
+    // выдает все книги автора
+    router.get("/authors/:id/books", (req, res) => {
+        const author = authorRepos.findById(Number(req.params.id))
+        if (!author) {
+            return res.end(`author with id ${req.params.id} not found`)
+        }
+
+        const authorBooks = booksRepos.findBooksByAuthor(author.name)
+
+        res.contentType("json")
+        res.end(JSON.stringify(authorBooks))
+    })
+
+    //______________________________________________________________
+
+    // создает книгу и добавляет в booksStorage 
+    router.post("/books/", (req, res) => {
+
+        const newBook = { name: req.body.name, author: req.body.author }
+        const addBook = bookService.create(newBook)
+
+        res.contentType("json")
+        res.end(JSON.stringify(addBook))
+    })
+
+    // удаляет книгу по айди
+    router.delete("/books/:id", (req, res) => {
+
+        const book = booksRepos.findById(Number(req.params.id))
+        if (!book) {
+            res.end("nahui")
+            return
+        }
+        booksRepos.delete(book.id)
+
+        res.contentType("json")
+        res.end(JSON.stringify(booksRepos.findAll()))
+    })
+
+    // Выдает список всех книг в booksStorage
+    router.get("/books", (_req, res) => {
+
+        res.contentType("json")
+        res.end(JSON.stringify(booksRepos.findAll()))
+    })
+
+    // обновлять книгу
+    router.put("/books/:id", (req, res) => {
+        const book = booksRepos.findById(Number(req.params.id))
+        if (!book) {
+            return res.end(`book with id ${Number(req.params.id)} not found`)
+        }
+
+        const updatedBook = bookService.update(book.id, { name: req.body.name, author: req.body.author })
+
+        res.contentType("json")
+        res.end(JSON.stringify(updatedBook))
+    })
 
     app.use(router)
 

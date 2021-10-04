@@ -28,15 +28,12 @@ export class ReadingListRepository {
      * @param userId 
      * @returns 
      */
-    findByUserId(userId: number): ReadingList | null {
-        const user = this._readingListStorage.find(user => user.id === userId)
-        if (!user) {
-            throw new Error("user not found")
-        }
-        return user
+    findByUserId(userId: number): ReadingList[] {
+
+        return this._readingListStorage.filter(user => user.id === userId)
     }
 
-    delete(userId: number) {
+    delete(userId: number): void {
         const position = this._readingListStorage.findIndex(x => x.id === userId)
         if (position !== -1) {
             this._readingListStorage.splice(position, 1)
@@ -50,7 +47,7 @@ export class ReadingListRepository {
      * Добавляет книгу в стораж
      * @param rl 
      */
-    insert(rl: ReadingList) {
+    insert(rl: ReadingList): void {
 
         const existingRl = this._readingListStorage.find(_rl => _rl.id === rl.id)
 
@@ -63,7 +60,7 @@ export class ReadingListRepository {
 
     }
 
-    insertNewUSer(user: ReadingList) {
+    insertNewUSer(user: ReadingList): void {
         const newUser = this._readingListStorage.find(x => x.id === user.id)
         if (!newUser) {
             this._readingListStorage.push(user)
@@ -74,7 +71,7 @@ export class ReadingListRepository {
      * Возвращает весь список стораж
      * @returns 
      */
-    findAll() {
+    findAll(): ReadingList[] {
         return this._readingListStorage
     }
 

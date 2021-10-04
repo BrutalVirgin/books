@@ -40,7 +40,7 @@ const users = [
 	{ id: 4, userId: 4, name: "sdfsfd" },
 ]
 
-// создать автора
+// создать автора +++
 router.post("/authors", (req, res) => {
 	const newAuthor = { id: authors.length + 1, name: req.body.name }
 	authors.push(newAuthor)
@@ -49,7 +49,7 @@ router.post("/authors", (req, res) => {
 	res.end(JSON.stringify(authors))
 })
 
-// удалить автора
+// удалить автора +++
 router.delete("/authors/:id", (req, res) => {
 	const findUser = authors.find((user) => {
 		return user.id === Number(req.params.id)
@@ -64,7 +64,7 @@ router.delete("/authors/:id", (req, res) => {
 	res.end(JSON.stringify(authors))
 })
 
-// обновить автора
+// обновить автора +++
 router.put("/authors/:id", (req, res) => {
 
 	const findAuthor = authors.find((author) => {
@@ -80,7 +80,7 @@ router.put("/authors/:id", (req, res) => {
 	res.end(JSON.stringify(authors))
 })
 
-// получить автора
+// получить автора +++
 router.get("/authors/:id", (req, res) => {
 	const findAuthor = authors.find((author) => {
 		return author.id === Number(req.params.id)
@@ -93,14 +93,14 @@ router.get("/authors/:id", (req, res) => {
 	res.end(JSON.stringify(author))
 })
 
-// получить всех авторов
+// получить всех авторов +++
 router.get("/authors", (req, res) => {
 
 	res.contentType("json")
 	res.end(JSON.stringify(authors))
 })
 
-// выдает все книги автора
+// выдает все книги автора +++
 router.get("/authors/:id/books", (req, res) => {
 	const authorBooks = []
 
@@ -347,7 +347,7 @@ router.post("/users", (req, res) => {
 })
 
 // _________________________________________________________________________________________________________
-// создает книгу по полям  { name: "Vitya", author: "2" } и добавляет в booksStorage 
+// создает книгу и добавляет в booksStorage +++
 router.post("/books/", (req, res) => {
 	console.log("POST /books", req.body)
 
@@ -357,7 +357,7 @@ router.post("/books/", (req, res) => {
 	res.end(JSON.stringify(booksStorage))
 })
 
-// удаляет книгу по айди
+// удаляет книгу по айди +++
 router.delete("/books/:id", (req, res) => {
 
 	const place = booksStorage.find((place) => {
@@ -373,7 +373,7 @@ router.delete("/books/:id", (req, res) => {
 	res.end(JSON.stringify(booksStorage))
 })
 
-// Выдает список всех книг в booksStorage
+// Выдает список всех книг в booksStorage +++
 router.get("/books", (req, res) => {
 	console.log("GET")
 

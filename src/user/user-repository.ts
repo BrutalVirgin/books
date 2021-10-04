@@ -14,11 +14,11 @@ export class UserRepository {
 
     ]
 
-    findAll() {
+    findAll(): User[] {
         return this._users
     }
 
-    delete(id: number) {
+    delete(id: number): void {
         const position = this._users.findIndex(x => x.id === id)
         if (position !== -1) {
             this._users.splice(position, 1)
@@ -49,11 +49,11 @@ export class UserRepository {
      * @param user 
      * @returns 
      */
-    insert(user: User) {
+    insert(user: User): User {
         this.delete(user.id)
 
-        const insertUSer = this._users.push(user)
+        this._users.push(user)
 
-        return insertUSer
+        return user
     }
 }
