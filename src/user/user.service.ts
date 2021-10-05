@@ -23,7 +23,7 @@ export class UserService {
         return this.userRepository.findAll()
     }
 
-    createUser(user: NewUserSet): void {
+    createUser(user: NewUserSet): User {
         const newUSer = {
             id: user.id,
             name: user.name,
@@ -32,7 +32,8 @@ export class UserService {
             createdAt: new Date(),
             updatedAt: new Date()
         }
-        this.userRepository.insert(newUSer)
+        this.userRepository.insertNewUSer(newUSer)
+        return newUSer
     }
 
     updateUser(id: number, data: UserChangeSet): User {

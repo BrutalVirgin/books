@@ -56,4 +56,10 @@ export class UserRepository {
 
         return user
     }
+
+    insertNewUSer(user: User): User {
+        this._users.push(user)
+
+        return user
+    }
 }
