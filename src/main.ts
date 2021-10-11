@@ -1,5 +1,7 @@
 import express from "express"
 
+import fs /*{ writeFileSync } */ from 'fs';
+
 import router from "./router"
 import { UserRepository } from "./user/user-repository"
 import { UserService } from "./user/user.service"
@@ -28,6 +30,35 @@ async function main() {
     const bookService = new BookService(booksRepos)
     const authorRepos = new AuthorRepository()
     const authorService = new AuthorService(authorRepos)
+
+    const str = JSON.stringify({ uno: 1, dos: 2, date: "asd" })
+    // fs.writeFile("test.txt", str, (err) => {
+    //     if (err) {
+    //         throw err
+    //     }
+    //     console.log("запись завершена")
+    // })
+
+    // fs.readFile("test.txt", "utf-8", (err, data) => {
+    //     console.log(data)
+
+    //     if (err) {
+    //         throw err
+    //     }
+    // })
+    fs.appendFile("test.txt", `\n${str}`, (err) => {
+        if (err) {
+            throw err
+        }
+
+        fs.readFile("test.txt", "utf-8", (err, data) => {
+            console.log(data)
+
+            if (err) {
+                throw err
+            }
+        })
+    })
 
 
     // выдает всех юзееров +++
@@ -311,22 +342,15 @@ async function main() {
 
 
 
-main()
+main
 
-// function test() {
-//     const readingListRepo = new ReadingListStorage()
-
-//     const updated = readingListRepo.updateRL(2, 1)
-
-//     if (updated.booksIds.includes(1)) {
-//         console.log("maladec")
-//     } else {
-//         console.log("gabella")
-//     }
-
-// }
-
-// test()
+function test() {
+    // const readingListRepo = new ReadingListRepository()
+    // readingListRepo
+    //writeFileSync("../readinglist/reading.json", "lox")
+    
+}
+test()
 
 
 // function massivi() {
@@ -386,4 +410,3 @@ main()
 
 // massivi()
 // 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
-// https://BrutalVirgin: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@github.com/BrutalVirgin/books.git
