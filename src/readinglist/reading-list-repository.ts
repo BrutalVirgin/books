@@ -3,11 +3,14 @@ import { resolve } from "path"
 import { readFileSync, writeFileSync } from "fs"
 import { ReadingList } from "./interfaces"
 import { createFile } from "../utils"
+import fs from "fs"
+
 
 export class ReadingListRepository {
     constructor() {
         this.load()
     }
+
 
     private FILE_PATH = resolve("./JSONs/reading-list.json")
 
@@ -32,8 +35,19 @@ export class ReadingListRepository {
 
         const fileContent = readFileSync(this.FILE_PATH)
 
-        this._readingListStorage = this.deserialize(fileContent) /// zdelat
+        // this._readingListStorage = this.deserialize(fileContent) /// zdelat
 
+    }
+
+    checkIfFileExitst(path: string) {
+        const file = fs.access(path, fs.constants.R_OK, (err) => {
+            if (err) {
+                // console.error(err)
+                // return
+                throw new Error("Error")
+            }
+            return file
+        })
     }
 
 
