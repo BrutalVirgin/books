@@ -1,10 +1,9 @@
 //import { User } from "../user/user"
 import { resolve } from "path"
-import { readFileSync, writeFileSync } from "fs"
+import { readFileSync } from "fs"
 import { ReadingList } from "./interfaces"
 import { createFile } from "../utils"
 import fs from "fs"
-
 
 export class ReadingListRepository {
     constructor() {
@@ -12,7 +11,7 @@ export class ReadingListRepository {
     }
 
 
-    private FILE_PATH = resolve("./JSONs/reading-list.json")
+    private FILE_PATH = resolve("./src/JSONs/reading-list.json")
 
     private _readingListStorage: ReadingList[] = [
         { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 },
@@ -28,26 +27,42 @@ export class ReadingListRepository {
 
         if (!isFileExitst) {
             console.log(`file not found ${this.FILE_PATH}, creating new one`)
-            createFile(this.FILE_PATH) /// zdelat
+            createFile(this.FILE_PATH, '') /// zdelat
         }
 
         console.log(`reading content`)
 
         const fileContent = readFileSync(this.FILE_PATH)
 
-        // this._readingListStorage = this.deserialize(fileContent) /// zdelat
+        this._readingListStorage = this.deserialize(fileContent) /// zdelat
 
     }
 
-    checkIfFileExitst(path: string) {
-        const file = fs.access(path, fs.constants.R_OK, (err) => {
-            if (err) {
-                // console.error(err)
-                // return
-                throw new Error("Error")
-            }
-            return file
+    deserialize(file: Buffer): ReadingList[] {
+        return JSON.parse(file.toString())
+
+    }
+
+    checkIfFileExitst(path: string): boolean {
+        // fs.readFileSync()
+        let existence: boolean = false;
+
+        fs.stat(path, (e) => {
+            existence = !!e
         })
+
+        return existence
+
+        // const file = fs.access(path, fs.constants.R_OK, (err) => {
+        //     if (err) {
+        //         console.error(err)
+        //         return undefined
+        //     } else {
+        //         return file
+        //     }
+        // })
+        // return file
+
     }
 
 
@@ -117,4 +132,3 @@ export class ReadingListRepository {
     }
 
 }
-

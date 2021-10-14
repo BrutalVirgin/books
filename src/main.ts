@@ -1,6 +1,6 @@
 import express from "express"
 
-import fs /*{ writeFileSync } */ from 'fs';
+// import fs /*{ writeFileSync } */ from 'fs';
 
 import router from "./router"
 import { UserRepository } from "./user/user-repository"
@@ -31,7 +31,7 @@ async function main() {
     const authorRepos = new AuthorRepository()
     const authorService = new AuthorService(authorRepos)
 
-    const str = JSON.stringify({ uno: 1, dos: 2, date: "asd" })
+    // const str = JSON.stringify({ uno: 1, dos: 2, date: "asd" })
     // fs.writeFile("test.txt", str, (err) => {
     //     if (err) {
     //         throw err
@@ -46,19 +46,19 @@ async function main() {
     //         throw err
     //     }
     // })
-    fs.appendFile("test.txt", `\n${str}`, (err) => {
-        if (err) {
-            throw err
-        }
+    // fs.appendFile("test.txt", `\n${str}`, (err) => {
+    //     if (err) {
+    //         throw err
+    //     }
 
-        fs.readFile("test.txt", "utf-8", (err, data) => {
-            console.log(data)
+    //     fs.readFile("test.txt", "utf-8", (err, data) => {
+    //         console.log(data)
 
-            if (err) {
-                throw err
-            }
-        })
-    })
+    //         if (err) {
+    //             throw err
+    //         }
+    //     })
+    // })
 
 
     // выдает всех юзееров +++
@@ -342,13 +342,13 @@ async function main() {
 
 
 
-main
+main()
 
 function test() {
     // const readingListRepo = new ReadingListRepository()
     // readingListRepo
     //writeFileSync("../readinglist/reading.json", "lox")
-    
+
 }
 test()
 
