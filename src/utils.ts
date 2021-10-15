@@ -21,11 +21,10 @@ export const createFile = (path: string, data: string): void => {
     fs.writeFile(path, data, (err) => {
         if (err) {
             throw err
-        } else {
-            console.log(`Created file ${path}`)
         }
-    })
+        console.log(`Created file ${path}`)
 
+    })
 }
 
 //export const writeFile = (path: string, data: Buffer): void => { throw new Error("IMPLMEMENTIRUI") }

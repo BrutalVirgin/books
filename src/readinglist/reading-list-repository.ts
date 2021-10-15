@@ -12,6 +12,7 @@ export class ReadingListRepository {
 
 
     private FILE_PATH = resolve("./src/JSONs/reading-list.json")
+    private file = "name: asdasd"
 
     private _readingListStorage: ReadingList[] = [
         { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 },
@@ -27,7 +28,7 @@ export class ReadingListRepository {
 
         if (!isFileExitst) {
             console.log(`file not found ${this.FILE_PATH}, creating new one`)
-            createFile(this.FILE_PATH, '') /// zdelat
+            createFile(this.FILE_PATH, this.file) /// zdelat
         }
 
         console.log(`reading content`)
@@ -44,7 +45,6 @@ export class ReadingListRepository {
     }
 
     checkIfFileExitst(path: string): boolean {
-        // fs.readFileSync()
         let existence: boolean = false;
 
         fs.stat(path, (e) => {
