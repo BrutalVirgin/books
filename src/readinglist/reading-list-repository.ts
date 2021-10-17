@@ -44,25 +44,28 @@ export class ReadingListRepository {
 
     }
 
-    checkIfFileExitst(path: string): boolean {
-        let existence: boolean = false;
-
-        fs.stat(path, (e) => {
-            existence = !!e
-        })
-
-        return existence
-
-        // const file = fs.access(path, fs.constants.R_OK, (err) => {
-        //     if (err) {
-        //         console.error(err)
-        //         return undefined
-        //     } else {
-        //         return file
-        //     }
+    checkIfFileExitst(path: string): Boolean {
+        // let a: Boolean;
+        // fs.stat(path, (e) => {
+        //     return a = !!e
         // })
-        // return file
 
+        // fs.readFile(path, "utf-8", (err, data) => {
+        //     if (err) {
+        //         throw err
+        //     }
+        //     console.log(data)
+
+        // })
+        fs.promises.readFile(path)
+            .then(data => {
+                console.log(data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+
+        return true
     }
 
 

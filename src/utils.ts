@@ -22,8 +22,6 @@ export const createFile = (path: string, data: string): void => {
         if (err) {
             throw err
         }
-        console.log(`Created file ${path}`)
-
     })
 }
 
