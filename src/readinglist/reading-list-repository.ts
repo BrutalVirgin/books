@@ -36,6 +36,7 @@ export class ReadingListRepository {
         const fileContent = readFileSync(this.FILE_PATH)
 
         this._readingListStorage = this.deserialize(fileContent) /// zdelat
+        console.log(this._readingListStorage)
 
     }
 
@@ -45,27 +46,12 @@ export class ReadingListRepository {
     }
 
     checkIfFileExitst(path: string): Boolean {
-        // let a: Boolean;
-        // fs.stat(path, (e) => {
-        //     return a = !!e
-        // })
-
-        // fs.readFile(path, "utf-8", (err, data) => {
-        //     if (err) {
-        //         throw err
-        //     }
-        //     console.log(data)
-
-        // })
-        fs.promises.readFile(path)
-            .then(data => {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-
-        return true
+        try {
+            fs.readFileSync(path)
+            return true
+        } catch (e) {
+            return false
+        }
     }
 
 
