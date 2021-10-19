@@ -18,11 +18,7 @@ export const dateForJson = JSON.stringify(new Date())
 
 export const createFile = (path: string, data: string): void => {
 
-    fs.writeFile(path, data, (err) => {
-        if (err) {
-            throw err
-        }
-    })
+    fs.writeFileSync(path, data)
 }
 
 //export const writeFile = (path: string, data: Buffer): void => { throw new Error("IMPLMEMENTIRUI") }

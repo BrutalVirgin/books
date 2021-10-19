@@ -12,7 +12,7 @@ export class ReadingListRepository {
 
 
     private FILE_PATH = resolve("./src/JSONs/reading-list.json")
-    private file = "name: asdasd"
+    //private file = "name: asdasd"
 
     private _readingListStorage: ReadingList[] = [
         { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 },
@@ -28,21 +28,45 @@ export class ReadingListRepository {
 
         if (!isFileExitst) {
             console.log(`file not found ${this.FILE_PATH}, creating new one`)
-            createFile(this.FILE_PATH, this.file) /// zdelat
+            createFile(this.FILE_PATH, JSON.stringify([])) /// zdelat
+
+            return
         }
 
         console.log(`reading content`)
 
-        const fileContent = readFileSync(this.FILE_PATH)
+        // const fileContent = readFileSync(this.FILE_PATH)
+        const fileContent1 = this.save()
 
-        this._readingListStorage = this.deserialize(fileContent) /// zdelat
+        // this._readingListStorage = this.deserialize(fileContent) /// zdelat
+        this._readingListStorage = this.save()
         console.log(this._readingListStorage)
 
     }
 
-    deserialize(file: Buffer): ReadingList[] {
-        return JSON.parse(file.toString())
+    private data = "asdasd"
 
+    save(): Buffer {
+        fs.readFile(this.FILE_PATH, (err) => {
+            if (err) {
+                throw err
+            }
+            fs.writeFile("reading-list.json", this.data, (err) => {
+                if (err) {
+                    throw err
+                }
+            })
+        })
+        return JSON.parse(readFileSync(this.FILE_PATH).toString())
+    }
+
+    deserialize(file: Buffer): ReadingList[] {
+
+        try {
+            return JSON.parse(file.toString())
+        } catch (error) {
+            throw new Error("invalid content type")
+        }
     }
 
     checkIfFileExitst(path: string): Boolean {

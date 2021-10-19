@@ -345,7 +345,7 @@ async function main() {
 main()
 
 function test() {
-    // const readingListRepo = new ReadingListRepository()
+    // const readingListRepo = new ()
     // readingListRepo
     //writeFileSync("../readinglist/reading.json", "lox")
 
