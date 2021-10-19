@@ -1,9 +1,9 @@
 //import { User } from "../user/user"
 import { resolve } from "path"
-import { readFileSync } from "fs"
+//import { readFileSync } from "fs"
 import { ReadingList } from "./interfaces"
 import { createFile } from "../utils"
-import fs from "fs"
+import fs, { readFileSync } from "fs"
 
 export class ReadingListRepository {
     constructor() {
@@ -39,25 +39,27 @@ export class ReadingListRepository {
         const fileContent1 = this.save()
 
         // this._readingListStorage = this.deserialize(fileContent) /// zdelat
-        this._readingListStorage = this.save()
-        console.log(this._readingListStorage)
 
+        // console.log(this._readingListStorage)
+        console.log(fileContent1)
     }
 
-    private data = "asdasd"
+    private data = { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 }
 
-    save(): Buffer {
+    save(): String {
+        const newFile = this.deserialize(readFileSync(this.FILE_PATH))
+        newFile.push(this.data)
         fs.readFile(this.FILE_PATH, (err) => {
             if (err) {
                 throw err
             }
-            fs.writeFile("reading-list.json", this.data, (err) => {
+            fs.appendFile(this.FILE_PATH, String(newFile), (err) => {
                 if (err) {
                     throw err
                 }
             })
         })
-        return JSON.parse(readFileSync(this.FILE_PATH).toString())
+        return JSON.stringify(this.data)
     }
 
     deserialize(file: Buffer): ReadingList[] {
@@ -66,6 +68,7 @@ export class ReadingListRepository {
             return JSON.parse(file.toString())
         } catch (error) {
             throw new Error("invalid content type")
+
         }
     }
 
