@@ -342,12 +342,12 @@ async function main() {
 
 
 
-main()
+main
 
 function test() {
-    // const readingListRepo = new ()
-    // readingListRepo
-    //writeFileSync("../readinglist/reading.json", "lox")
+    const repo = new ReadingListRepository()
+
+    console.log(repo.findAll())
 
 }
 test()

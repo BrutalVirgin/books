@@ -1,25 +1,26 @@
 //import { User } from "../user/user"
 import { resolve } from "path"
-//import { readFileSync } from "fs"
 import { ReadingList } from "./interfaces"
 import { createFile } from "../utils"
-import fs, { readFileSync } from "fs"
+import * as fs from "fs";
 
 export class ReadingListRepository {
     constructor() {
         this.load()
+
+        this.startSyncing()
+    }
+    startSyncing() {
+        setInterval(() => {
+            this.save()
+        }, 2000)
     }
 
 
     private FILE_PATH = resolve("./src/JSONs/reading-list.json")
-    //private file = "name: asdasd"
+    //private file = "name: asdasd
 
-    private _readingListStorage: ReadingList[] = [
-        { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 },
-        { id: 1, booksIds: [5, 1], updatedAt: new Date(), userId: 1 },
-        { id: 2, booksIds: [4], updatedAt: new Date(), userId: 2 },
-        { id: 3, booksIds: [2, 5], updatedAt: new Date(), userId: 3 },
-    ]
+    private _readingListStorage: ReadingList[] = []
 
     private load() {
         console.log(`loading data for ${this.constructor.name} at path: `, this.FILE_PATH)
@@ -32,34 +33,28 @@ export class ReadingListRepository {
 
             return
         }
-
+        
         console.log(`reading content`)
-
-        // const fileContent = readFileSync(this.FILE_PATH)
-        const fileContent1 = this.save()
-
-        // this._readingListStorage = this.deserialize(fileContent) /// zdelat
-
-        // console.log(this._readingListStorage)
-        console.log(fileContent1)
+        
+        this._readingListStorage = this.deserialize(fs.readFileSync(this.FILE_PATH))
+        
     }
 
-    private data = { id: 1, booksIds: [1, 3, 6,], updatedAt: new Date(), userId: 1 }
+    save() {
+        // Преобразовать то, что хранится в памяти в строчку json
+        const addedFile = this.serialize(this._readingListStorage)
+        // записать файл в ридинг лист
 
-    save(): String {
-        const newFile = this.deserialize(readFileSync(this.FILE_PATH))
-        newFile.push(this.data)
-        fs.readFile(this.FILE_PATH, (err) => {
+        fs.writeFile(this.FILE_PATH, addedFile, (err) => {
             if (err) {
                 throw err
             }
-            fs.appendFile(this.FILE_PATH, String(newFile), (err) => {
-                if (err) {
-                    throw err
-                }
-            })
         })
-        return JSON.stringify(this.data)
+
+    }
+
+    serialize(file: ReadingList[]): string {
+        return JSON.stringify(file)
     }
 
     deserialize(file: Buffer): ReadingList[] {
