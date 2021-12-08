@@ -31,35 +31,6 @@ async function main() {
     const authorRepos = new AuthorRepository()
     const authorService = new AuthorService(authorRepos)
 
-    // const str = JSON.stringify({ uno: 1, dos: 2, date: "asd" })
-    // fs.writeFile("test.txt", str, (err) => {
-    //     if (err) {
-    //         throw err
-    //     }
-    //     console.log("запись завершена")
-    // })
-
-    // fs.readFile("test.txt", "utf-8", (err, data) => {
-    //     console.log(data)
-
-    //     if (err) {
-    //         throw err
-    //     }
-    // })
-    // fs.appendFile("test.txt", `\n${str}`, (err) => {
-    //     if (err) {
-    //         throw err
-    //     }
-
-    //     fs.readFile("test.txt", "utf-8", (err, data) => {
-    //         console.log(data)
-
-    //         if (err) {
-    //             throw err
-    //         }
-    //     })
-    // })
-
 
     // выдает всех юзееров +++
     router.get("/users", (_req, res) => {
@@ -120,7 +91,6 @@ async function main() {
     })
 
     // удаляем юзера
-    // artem: /users/:id 
     router.delete("/users/:id", (req, res) => {
         userRepo.delete(Number(req.params.id))
 
@@ -189,7 +159,7 @@ async function main() {
         }
 
         if (user.booksIds.length >= 5) {
-            return res.end(`You have more than 5 books. Pashol nahui`)
+            return res.end(`You have more than 5 books`)
         }
 
         if (user && user.booksIds.length < 5) {
@@ -340,73 +310,5 @@ async function main() {
 
 }
 
+main()
 
-
-main
-
-function test() {
-    const repo = new ReadingListRepository()
-
-    console.log(repo.findAll())
-
-}
-test()
-
-
-// function massivi() {
-//     const arr: number[] = [
-//         4,
-//         1,
-//         3,
-//         5,
-//         2,
-//         10,
-//     ]
-
-    // сделай масив в котором есть только четные
-    // const newArr = arr.filter(a => a % 2 === 0)
-    // console.log(newArr)
-//     const newArr5 = arr.reduce<number[]>((acc, curVal) => {
-//         if (curVal % 2 === 0) {
-//             return [...acc, curVal]
-//         }
-//         return acc
-//     }, [])
-//     console.log(newArr5)
-//     // сделай массив где каждый элемент больше в два раза чем  в arr
-//     const newArr2 = arr.map(x => x * 2)
-//     console.log(newArr2)
-//     // сделай массив где каждый элемент это копия arr
-//     // const newArr3 = arr.slice(0, arr.length)
-//     // console.log(newArr3)
-//     const array = arr.map(_ => arr)
-//     console.log(array)
-//     // сумма всех элементов
-//     const newArr4 = arr.reduce((a, b) => a + b)
-//     console.log(newArr4)
-//     // отсортируй без sort
-//     function bubbleSort(mainArr: (number | undefined)[]) {
-//         for (var i = 0; i < mainArr.length; i++) {
-//             for (var j = mainArr.length - 1; j > i; j--) {
-//                 if (mainArr[j - 1]! > mainArr[j]!) {
-//                     [mainArr[j - 1], mainArr[j]] = [mainArr[j], mainArr[j - 1]]
-//                 }
-//             }
-//         }
-//         return mainArr
-//     }
-
-//     const newArr6 = arr.reduce<number[]>((acc, currVal,) => {
-//         if (acc.length === 0) {
-//             return [currVal]
-//         }
-//         else {
-//             return [...acc, currVal]
-//         }
-//         return acc
-//     }, [])
-//     console.log(bubbleSort(newArr6))
-// }
-
-// massivi()
-// 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

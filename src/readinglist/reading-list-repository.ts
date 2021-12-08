@@ -81,7 +81,7 @@ export class ReadingListRepository {
     //     return Promise
     // }
     /**
-     * Находит ридинг лист по айди ???
+     * Находит ридинг лист по айди
      * @param id 
      * @returns 
      */

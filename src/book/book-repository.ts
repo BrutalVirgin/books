@@ -5,13 +5,13 @@ export class BooksRepository {
     constructor() { }
 
     private _books: Book[] = [
-        { id: 4, name: "PIZDA", author: "Vara", createdAt: new Date() },
-        { id: 2, name: "MOCHA", author: "Vitya", createdAt: new Date() },
-        { id: 3, name: "SISKI", author: "Kirill", createdAt: new Date() },
-        { id: 1, name: "GOVNO", author: "Artem", createdAt: new Date() },
-        { id: 5, name: "PIZDA 2", author: "Vara", createdAt: new Date() },
-        { id: 7, name: "MOCHA 2", author: "Vitya", createdAt: new Date() },
-        { id: 6, name: "SISKI 2", author: "Kirill", createdAt: new Date() },
+        { id: 4, name: "book 1", author: "Vara", createdAt: new Date() },
+        { id: 2, name: "book 2", author: "Vitya", createdAt: new Date() },
+        { id: 3, name: "book 3", author: "Kirill", createdAt: new Date() },
+        { id: 1, name: "book 4", author: "Artem", createdAt: new Date() },
+        { id: 5, name: "book 5", author: "Vara", createdAt: new Date() },
+        { id: 7, name: "book 6", author: "Vitya", createdAt: new Date() },
+        { id: 6, name: "book 7", author: "Kirill", createdAt: new Date() },
     ]
     /**
      * Вставляет книгу в стораж

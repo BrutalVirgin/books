@@ -18,7 +18,7 @@ export class ReadingListService {
 
         const book = rl.booksIds.includes(booksId)
         if (book) {
-            throw new Error("user alreadu have this book")
+            throw new Error("user already have this book")
         }
 
         const updatedRL: ReadingList = {
